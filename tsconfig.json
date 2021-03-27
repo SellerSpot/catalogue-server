@@ -1,0 +1,45 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "CommonJS",
+        "target": "ES5",
+        "lib": [
+            "ESNext",
+        ],
+        "removeComments": true,
+        "allowSyntheticDefaultImports": true,
+        "allowJs": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "downlevelIteration": true,
+        "baseUrl": "src",
+        "paths": {
+            "config/*": [
+                "config/*"
+            ],
+            "controller/*": [
+                "controller/*"
+            ],
+            "models/*": [
+                "models/*"
+            ],
+            "routers/*": [
+                "routers/*"
+            ],
+            "sockets/*": [
+                "sockets/*"
+            ],
+            "typings/*": [
+                "typings/*"
+            ],
+            "utilities/*": [
+                "utilities/*"
+            ],
+        }
+    },
+    "include": [
+        "src",
+    ]
+}
