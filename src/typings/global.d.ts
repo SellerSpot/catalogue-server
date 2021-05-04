@@ -1,5 +1,4 @@
-import { connection } from 'mongoose';
-
+import { ITenantJWTToken } from '@sellerspot/universal-types';
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
@@ -10,18 +9,11 @@ declare global {
             DATABASE_SERVER_URL: string;
             DATABASE_SERVER_QUERY: string;
             APP_SECRET: string;
-            CLIENT_BASE_DOMAIN_FOR_APPS: string;
-        }
-
-        interface Global {
-            dbConnection: typeof connection;
-            currentDb: typeof connection;
         }
     }
-
     namespace Express {
         interface Request {
-            tenantId?: string;
+            currentTenant?: ITenantJWTToken;
         }
     }
 }

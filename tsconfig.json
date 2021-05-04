@@ -8,28 +8,32 @@
             "ESNext",
         ],
         "removeComments": true,
+        "typeRoots": [
+            "./node_modules/@types",
+            "./src/typings"
+        ],
         "allowSyntheticDefaultImports": true,
         "allowJs": true,
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "moduleResolution": "node",
         "downlevelIteration": true,
+        "declaration": true,
+        "declarationDir": "dist",
+        "declarationMap": true,
         "baseUrl": "src",
         "paths": {
-            "config/*": [
-                "config/*"
+            "configs/*": [
+                "configs/*"
             ],
-            "controller/*": [
-                "controller/*"
+            "controllers/*": [
+                "controllers/*"
             ],
             "models/*": [
                 "models/*"
             ],
             "routers/*": [
                 "routers/*"
-            ],
-            "sockets/*": [
-                "sockets/*"
             ],
             "typings/*": [
                 "typings/*"
@@ -40,6 +44,6 @@
         }
     },
     "include": [
-        "src",
+        "src/**/*"
     ]
 }
