@@ -1,17 +1,24 @@
+import { logger, middleware } from '@sellerspot/universal-functions';
+import { CONFIG, configureDB } from 'configs/config';
 import expresss from 'express';
-import { logger } from 'utilities/logger';
-import { CONFIG, configureDB, applyExpressMiddlewares } from './config/config';
-import rootRouter from './router';
-// globals
-const app: expresss.Application = expresss();
-const PORT: number = CONFIG.PORT;
+import 'express-async-errors';
+import { rootRouter } from 'routers/router';
+import * as _ from './typings/global';
 
-// middlewares and configurations
+// globals
+const app = expresss();
+
+// db configurations
 configureDB();
-applyExpressMiddlewares(app);
+
+//common middlewares applied
+middleware.applyCommon(app);
 
 // router setup
 app.use('/', rootRouter);
 
+// error handler
+app.use(middleware.errorHandler);
+
 // listeners
-app.listen(PORT, () => logger.express(`SellerSpot Catalogue Server Started at the PORT ${PORT}`));
+app.listen(CONFIG.PORT, () => logger.info(`SellerSpot Auth Server started on PORT ${CONFIG.PORT}`));
