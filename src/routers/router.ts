@@ -5,7 +5,7 @@ import { Router } from 'express';
 
 const rootRouter = Router();
 
-rootRouter.use('/categories', categoryRouter);
+rootRouter.use(ROUTES.CATALOGUE.CATAGORY.RESOURCE, categoryRouter);
 
 rootRouter.get(ROUTES.AUTH.INFO, (req, res) => {
     logger.debug(

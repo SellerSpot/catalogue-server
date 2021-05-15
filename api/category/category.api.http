@@ -1,0 +1,71 @@
+@serviceresource =  catalogue/categories
+
+###
+// @name info
+GET {{devProxyBaseUrl}}/{{service}}/info HTTP/1.1
+###
+
+###
+// @name create_category
+POST {{devProxyBaseUrl}}/{{serviceresource}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title":"immi",
+  "parentId": "609fce24732342c0843e0e1f"
+}
+###
+
+###
+// @name list_categories
+GET {{devProxyBaseUrl}}/{{serviceresource}} HTTP/1.1
+Authorization: Bearer {{token}}
+###
+
+###
+// @name get_category
+GET {{devProxyBaseUrl}}/{{serviceresource}}/609f929901d9974e19d489b9 HTTP/1.1
+Authorization: Bearer {{token}}
+###
+
+###
+// @name edit_category
+PUT {{devProxyBaseUrl}}/{{serviceresource}}/609edad00da307320e18d7e9 HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title":"shirt-update-jj"
+}
+###
+
+###
+// @name edit_category_sibling
+PUT {{devProxyBaseUrl}}/{{serviceresource}}/609f929901d9974e19d489b9/siblingorder HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "siblingOrder":["609f97085f2acd563799106b","609f96f65f2acd563799106a"]
+}
+###
+
+
+###
+// @name edit_category_position
+PUT {{devProxyBaseUrl}}/{{serviceresource}}/609f876fd346b53a4019b3e9/position HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "oldParentId": "609edad00da307320e18d7e9",
+  "newParentId": "609f927501d9974e19d489b8"
+}
+###
+
+###
+// @name delete_category
+DELETE  {{devProxyBaseUrl}}/{{serviceresource}}/609fc970d9b0bcb88c95a806 HTTP/1.1
+Authorization: Bearer {{token}}
+###
