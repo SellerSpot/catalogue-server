@@ -12,8 +12,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "title":"immi",
-  "parentId": "609fce24732342c0843e0e1f"
+  "title":"jarius",
+  "parentId":"60a4161968d5f47f0ccc03fe"
 }
 ###
 
@@ -31,23 +31,23 @@ Authorization: Bearer {{token}}
 
 ###
 // @name edit_category
-PUT {{devProxyBaseUrl}}/{{serviceresource}}/609edad00da307320e18d7e9 HTTP/1.1
+PUT {{devProxyBaseUrl}}/{{serviceresource}}/60a4164668d5f47f0ccc0400 HTTP/1.1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "title":"shirt-update-jj"
+  "title":"Jarius joushua"
 }
 ###
 
 ###
 // @name edit_category_sibling
-PUT {{devProxyBaseUrl}}/{{serviceresource}}/609f929901d9974e19d489b9/siblingorder HTTP/1.1
+PUT {{devProxyBaseUrl}}/{{serviceresource}}/60a4161968d5f47f0ccc03fe/siblingorder HTTP/1.1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "siblingOrder":["609f97085f2acd563799106b","609f96f65f2acd563799106a"]
+  "siblingOrder":["60a4164668d5f47f0ccc0400","60a4164068d5f47f0ccc03ff"]
 }
 ###
 
@@ -66,6 +66,6 @@ Content-Type: application/json
 
 ###
 // @name delete_category
-DELETE  {{devProxyBaseUrl}}/{{serviceresource}}/609fc970d9b0bcb88c95a806 HTTP/1.1
+DELETE  {{devProxyBaseUrl}}/{{serviceresource}}/60a415fe68d5f47f0ccc03fb HTTP/1.1
 Authorization: Bearer {{token}}
 ###

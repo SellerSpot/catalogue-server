@@ -1,4 +1,4 @@
-import { ITenantJWTToken } from '@sellerspot/universal-types';
+import { IUserJwtTokenPayload } from '@sellerspot/universal-types';
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
@@ -13,7 +13,7 @@ declare global {
     }
     namespace Express {
         interface Request {
-            currentTenant?: ITenantJWTToken;
+            currentUser?: IUserJwtTokenPayload;
         }
     }
 }
