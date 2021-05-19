@@ -1,73 +1,61 @@
 import { Router } from 'express';
 import { middlewares } from '@sellerspot/universal-functions';
-import { dbMiddlewares } from '@sellerspot/database-models';
 import { ROUTES } from '@sellerspot/universal-types';
 import { categorySchema, resourcePathParam } from 'schemas/schema';
 import { categoryController } from 'controllers/controller';
 
 const router = Router();
 
-router.get(
-    ROUTES.CATALOGUE.CATAGORY.ACTION.LIST,
-    middlewares.auth,
-    dbMiddlewares.setTenantDb,
-    categoryController.getAllCategories,
-);
+router.get(ROUTES.CATALOGUE.CATAGORY_LIST, middlewares.auth, categoryController.getAllCategories);
 
 router.get(
-    ROUTES.CATALOGUE.CATAGORY.ACTION.GET,
+    ROUTES.CATALOGUE.CATAGORY_GET,
     middlewares.validateSchema({ pathParamSchema: resourcePathParam }),
     middlewares.auth,
-    dbMiddlewares.setTenantDb,
     categoryController.getCategory,
 );
 
 router.post(
-    ROUTES.CATALOGUE.CATAGORY.ACTION.CREATE,
+    ROUTES.CATALOGUE.CATAGORY_CREATE,
     middlewares.validateSchema({ bodySchema: categorySchema.createCategory }),
     middlewares.auth,
-    dbMiddlewares.setTenantDb,
     categoryController.createCategory,
 );
 
 router.put(
-    ROUTES.CATALOGUE.CATAGORY.ACTION.EDIT_CATEGORY_POSITION,
+    ROUTES.CATALOGUE.CATAGORY_EDIT_CATEGORY_POSITION,
     middlewares.validateSchema({
         pathParamSchema: resourcePathParam,
         bodySchema: categorySchema.editCategoryPosition,
     }),
     middlewares.auth,
-    dbMiddlewares.setTenantDb,
     categoryController.editCategoryPosition,
 );
 
 router.put(
-    ROUTES.CATALOGUE.CATAGORY.ACTION.EDIT_SIBLING_ORDER,
+    ROUTES.CATALOGUE.CATAGORY_EDIT_SIBLING_ORDER,
     middlewares.validateSchema({
         pathParamSchema: resourcePathParam,
         bodySchema: categorySchema.editSiblingOrder,
     }),
     middlewares.auth,
-    dbMiddlewares.setTenantDb,
     categoryController.editCategorySiblingOrder,
 );
 
 router.put(
-    ROUTES.CATALOGUE.CATAGORY.ACTION.EDIT,
+    ROUTES.CATALOGUE.CATAGORY_EDIT,
     middlewares.validateSchema({
         pathParamSchema: resourcePathParam,
         bodySchema: categorySchema.editCategory,
     }),
     middlewares.auth,
-    dbMiddlewares.setTenantDb,
     categoryController.editCategory,
 );
 
 router.delete(
-    ROUTES.CATALOGUE.CATAGORY.ACTION.DELETE,
+    ROUTES.CATALOGUE.CATAGORY_DELETE,
     middlewares.validateSchema({ pathParamSchema: resourcePathParam }),
     middlewares.auth,
-    dbMiddlewares.setTenantDb,
     categoryController.deleteCategory,
 );
 
