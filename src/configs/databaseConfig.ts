@@ -1,4 +1,4 @@
-import { DbConnectionManager, DB_NAMES, models } from '@sellerspot/database-models';
+import { DbConnectionManager, DB_NAMES } from '@sellerspot/database-models';
 import { DatabaseConnectionError, logger } from '@sellerspot/universal-functions';
 import { CONFIG } from 'configs/config';
 import mongoose from 'mongoose';
@@ -26,6 +26,5 @@ export const configureDB = (): void => {
         // initialize database-models with connection object
         DbConnectionManager.intialize(connectionObject);
         logger.info(`Connected to ${DB_NAMES.CORE_DB}`);
-        models.handsake === true && logger.info(`All models registeded to runtime`);
     });
 };
