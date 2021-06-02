@@ -1,7 +1,7 @@
 import { tenantDbServices, tenantDbModels } from '@sellerspot/database-models';
 import {
     ICreateCategoryRequest,
-    IListCategory,
+    ICategory,
     IEditCategoryPositionRequest,
     IEditCategorySiblingOrderRequest,
     IEditCategoryRequest,
@@ -19,7 +19,7 @@ export class CategoryService {
         return <TCategory>category.toJSON();
     }
 
-    static async show(categoryId: string): Promise<IListCategory> {
+    static async show(categoryId: string): Promise<ICategory> {
         const { getCategoryById } = tenantDbServices.catalogue;
         const { id, title, children } = await getCategoryById(categoryId);
         const childrenHash = (<TCategoryDoc[]>children).map((child) => {
@@ -31,16 +31,13 @@ export class CategoryService {
     static async position(
         categoryId: string,
         pos: IEditCategoryPositionRequest,
-    ): Promise<IListCategory> {
+    ): Promise<ICategory> {
         const { editCategoryPosition } = tenantDbServices.catalogue;
         const { id, title, parent: parentId } = await editCategoryPosition(categoryId, pos);
         return { id, title, parentId: <string>parentId };
     }
 
-    static async edit(
-        categoryId: string,
-        categoryMeta: IEditCategoryRequest,
-    ): Promise<IListCategory> {
+    static async edit(categoryId: string, categoryMeta: IEditCategoryRequest): Promise<ICategory> {
         const { editCategoryContent } = tenantDbServices.catalogue;
         const { id, title } = await editCategoryContent(categoryId, categoryMeta);
         return { id, title };
@@ -49,7 +46,7 @@ export class CategoryService {
     static async siblingorder(
         categoryId: string,
         siblingArr: IEditCategorySiblingOrderRequest,
-    ): Promise<IListCategory> {
+    ): Promise<ICategory> {
         const { editCategorySiblingOrder } = tenantDbServices.catalogue;
         const { id, title, children } = await editCategorySiblingOrder(categoryId, siblingArr);
         const childrenHash = (<TCategoryDoc[]>children).map((child) => {
@@ -63,10 +60,10 @@ export class CategoryService {
         await deleteCategory(categoryId);
     }
 
-    static async list(): Promise<IListCategory[]> {
+    static async list(): Promise<ICategory[]> {
         const { getAllCategory } = tenantDbServices.catalogue;
         const allCategory: TCategoryDoc[] = await getAllCategory();
-        const categoryList: IListCategory[] = [];
+        const categoryList: ICategory[] = [];
         if (!isEmpty(allCategory)) {
             const categoryIdVsCategory: Record<string, TCategoryDoc> = {};
             allCategory.forEach((currCategory) => {
@@ -95,8 +92,8 @@ export class CategoryService {
     private static buildCategoryRecursively(
         categoryId: string,
         categoryIdVsCategory: Record<string, TCategoryDoc>,
-    ): IListCategory {
-        const categoryHash = <IListCategory>{};
+    ): ICategory {
+        const categoryHash = <ICategory>{};
 
         const currCategory = categoryIdVsCategory[categoryId];
 
@@ -104,7 +101,7 @@ export class CategoryService {
             const { id, title, children } = currCategory;
             categoryHash.id = id;
             categoryHash.title = title;
-            const childCategoryList: IListCategory[] = [];
+            const childCategoryList: ICategory[] = [];
             if (children.length || children.length !== 0) {
                 for (let child of children) {
                     child = child.toString();
