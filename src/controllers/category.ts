@@ -2,8 +2,8 @@ import { RequestHandler } from 'express';
 import {
     ICreateCategoryRequest,
     ICreateCategoryResponse,
-    IListCategory,
-    IListCategoryResponse,
+    ICategory,
+    IGetAllCategoryResponse,
     IGetCategoryResponse,
     IEditCategoryPositionResponse,
     IEditCategorySiblingOrderResponse,
@@ -28,17 +28,17 @@ export const createCategory: RequestHandler = async (req, res) => {
 };
 
 export const getCategory: RequestHandler = async (req, res) => {
-    const category: IListCategory = await CategoryService.show(req.params.id);
+    const category: ICategory = await CategoryService.show(req.params.id);
     res.status(STATUS_CODE.OK).json(<IGetCategoryResponse>{ status: true, data: category });
 };
 
 export const getAllCategories: RequestHandler = async (_, res) => {
-    const allCategories: IListCategory[] = await CategoryService.list();
-    res.status(STATUS_CODE.OK).json(<IListCategoryResponse>{ status: true, data: allCategories });
+    const allCategories: ICategory[] = await CategoryService.list();
+    res.status(STATUS_CODE.OK).json(<IGetAllCategoryResponse>{ status: true, data: allCategories });
 };
 
 export const editCategoryPosition: RequestHandler = async (req, res) => {
-    const category: IListCategory = await CategoryService.position(req.params.id, req.body);
+    const category: ICategory = await CategoryService.position(req.params.id, req.body);
     res.status(STATUS_CODE.OK).json(<IEditCategoryPositionResponse>{
         status: true,
         data: category,
@@ -46,7 +46,7 @@ export const editCategoryPosition: RequestHandler = async (req, res) => {
 };
 
 export const editCategorySiblingOrder: RequestHandler = async (req, res) => {
-    const category: IListCategory = await CategoryService.siblingorder(req.params.id, req.body);
+    const category: ICategory = await CategoryService.siblingorder(req.params.id, req.body);
     res.status(STATUS_CODE.OK).json(<IEditCategorySiblingOrderResponse>{
         status: true,
         data: category,
@@ -54,7 +54,7 @@ export const editCategorySiblingOrder: RequestHandler = async (req, res) => {
 };
 
 export const editCategory: RequestHandler = async (req, res) => {
-    const category: IListCategory = await CategoryService.edit(req.params.id, req.body);
+    const category: ICategory = await CategoryService.edit(req.params.id, req.body);
     res.status(STATUS_CODE.OK).json(<IEditCategoryResponse>{
         status: true,
         data: category,

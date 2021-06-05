@@ -6,7 +6,7 @@ import { categoryController } from 'controllers/controller';
 
 const router = Router();
 
-router.get(ROUTES.CATALOGUE.CATAGORY_LIST, middlewares.auth, categoryController.getAllCategories);
+router.get(ROUTES.CATALOGUE.CATEGORY_LIST, middlewares.auth, categoryController.getAllCategories);
 
 router.get(
     ROUTES.CATALOGUE.CATAGORY_GET,
