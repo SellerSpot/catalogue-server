@@ -1,0 +1,46 @@
+@serviceresource =  catalogue/brands
+@brandId = 60bbeeb8f8e1c1aeacbd2783
+
+
+###
+// @name create_brand
+POST {{devProxyBaseUrl}}/{{serviceresource}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name":"RohitRaj"
+}
+###
+
+
+###
+// @name get_brands
+GET {{devProxyBaseUrl}}/{{serviceresource}} HTTP/1.1
+Authorization: Bearer {{token}}
+###
+
+
+###
+// @name get_brand
+GET {{devProxyBaseUrl}}/{{serviceresource}}/{{brandId}} HTTP/1.1
+Authorization: Bearer {{token}}
+###
+
+###
+// @name edit_brand
+PUT {{devProxyBaseUrl}}/{{serviceresource}}/{{brandId}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name":"noelimmi"
+}
+###
+
+
+###
+// @name delete_brand
+DELETE {{devProxyBaseUrl}}/{{serviceresource}}/{{brandId}} HTTP/1.1
+Authorization: Bearer {{token}}
+###

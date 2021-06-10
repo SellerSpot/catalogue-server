@@ -1,4 +1,8 @@
-import { logger, middlewares } from '@sellerspot/universal-functions';
+import {
+    logger,
+    middlewares,
+    applyGracefullShutDownHandler,
+} from '@sellerspot/universal-functions';
 import { CONFIG, configureDB } from 'configs/config';
 import expresss from 'express';
 import 'express-async-errors';
@@ -21,6 +25,8 @@ app.use('/', rootRouter);
 app.use(middlewares.errorHandler);
 
 // listeners
-app.listen(CONFIG.PORT, () =>
+const server = app.listen(CONFIG.PORT, () =>
     logger.info(`SellerSpot Catelogue server started on PORT ${CONFIG.PORT}`),
 );
+
+applyGracefullShutDownHandler(server);
