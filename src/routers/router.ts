@@ -1,11 +1,12 @@
-import { IResponse, ROUTES, STATUS_CODE } from '@sellerspot/universal-types';
-import { default as categoryRouter } from './category';
-import { default as brandRouter } from './brand';
 import { Router } from 'express';
+import { IResponse, ROUTES, STATUS_CODE } from '@sellerspot/universal-types';
+import categoryRouter from './category';
+import brandRouter from './brand';
 
 const rootRouter = Router();
 
 rootRouter.use('/', categoryRouter);
+
 rootRouter.use('/', brandRouter);
 
 rootRouter.get(ROUTES.CATALOGUE.INFO, (_, res) => {

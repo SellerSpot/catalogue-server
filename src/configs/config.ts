@@ -1,3 +1,4 @@
+export * from './databaseConfig';
 import { DB_NAMES } from '@sellerspot/database-models';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -16,5 +17,3 @@ export const CONFIG = {
     APP_SECRET: process.env.APP_SECRET,
     DOMAIN: process.env.DOMAIN,
 };
-
-export * from './databaseConfig';

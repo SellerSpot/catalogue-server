@@ -1,62 +1,62 @@
 import { Router } from 'express';
 import { middlewares } from '@sellerspot/universal-functions';
 import { ROUTES } from '@sellerspot/universal-types';
-import { categorySchema, resourcePathParam } from 'schemas/schema';
-import { categoryController } from 'controllers/controller';
+import { CategorySchema, CommonSchema } from 'schemas/schemas';
+import { CategoryController } from 'controllers/controllers';
 
 const router = Router();
 
-router.get(ROUTES.CATALOGUE.CATEGORY_LIST, middlewares.auth, categoryController.getAllCategories);
+router.get(ROUTES.CATALOGUE.CATEGORY_LIST, middlewares.auth, CategoryController.getAllCategories);
 
 router.get(
     ROUTES.CATALOGUE.CATAGORY_GET,
-    middlewares.validateSchema({ pathParamSchema: resourcePathParam }),
+    middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,
-    categoryController.getCategory,
+    CategoryController.getCategory,
 );
 
 router.post(
     ROUTES.CATALOGUE.CATAGORY_CREATE,
-    middlewares.validateSchema({ bodySchema: categorySchema.createCategory }),
+    middlewares.validateSchema({ bodySchema: CategorySchema.createCategory }),
     middlewares.auth,
-    categoryController.createCategory,
+    CategoryController.createCategory,
 );
 
 router.put(
     ROUTES.CATALOGUE.CATAGORY_EDIT_CATEGORY_POSITION,
     middlewares.validateSchema({
-        pathParamSchema: resourcePathParam,
-        bodySchema: categorySchema.editCategoryPosition,
+        pathParamSchema: CommonSchema.resourcePathParam,
+        bodySchema: CategorySchema.editCategoryPosition,
     }),
     middlewares.auth,
-    categoryController.editCategoryPosition,
+    CategoryController.editCategoryPosition,
 );
 
 router.put(
     ROUTES.CATALOGUE.CATAGORY_EDIT_SIBLING_ORDER,
     middlewares.validateSchema({
-        pathParamSchema: resourcePathParam,
-        bodySchema: categorySchema.editSiblingOrder,
+        pathParamSchema: CommonSchema.resourcePathParam,
+        bodySchema: CategorySchema.editSiblingOrder,
     }),
     middlewares.auth,
-    categoryController.editCategorySiblingOrder,
+    CategoryController.editCategorySiblingOrder,
 );
 
 router.put(
     ROUTES.CATALOGUE.CATAGORY_EDIT,
     middlewares.validateSchema({
-        pathParamSchema: resourcePathParam,
-        bodySchema: categorySchema.editCategory,
+        pathParamSchema: CommonSchema.resourcePathParam,
+        bodySchema: CategorySchema.editCategory,
     }),
     middlewares.auth,
-    categoryController.editCategory,
+    CategoryController.editCategory,
 );
 
 router.delete(
     ROUTES.CATALOGUE.CATAGORY_DELETE,
-    middlewares.validateSchema({ pathParamSchema: resourcePathParam }),
+    middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,
-    categoryController.deleteCategory,
+    CategoryController.deleteCategory,
 );
 
 export default router;

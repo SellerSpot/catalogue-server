@@ -11,7 +11,7 @@ import { isEmpty } from 'lodash';
 type TCategory = tenantDbModels.catalogueModels.ICategory;
 type TCategoryDoc = tenantDbModels.catalogueModels.ICategoryDoc;
 
-export class CategoryService {
+export default class CategoryService {
     static async create(newCategory: ICreateCategoryRequest): Promise<TCategory> {
         const { createCategory } = tenantDbServices.catalogue;
         const { title, parentId } = newCategory;

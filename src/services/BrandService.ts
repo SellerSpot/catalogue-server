@@ -2,7 +2,8 @@ import { IBrandData, ICreateBrandRequest, IEditBrandRequest } from '@sellerspot/
 import { tenantDbServices, tenantDbModels } from '@sellerspot/database-models';
 
 type TBrand = tenantDbModels.catalogueModels.IBrand;
-export class BrandService {
+
+export default class BrandService {
     static async show(brandId: string): Promise<IBrandData> {
         const { getBrand } = tenantDbServices.catalogue;
         const brand: TBrand = await getBrand(brandId);
