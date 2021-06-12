@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import {
     ICreateCategoryRequest,
     ICreateCategoryResponse,
-    ICategory,
+    ICategoryData,
     IGetAllCategoryResponse,
     IGetCategoryResponse,
     IEditCategoryPositionResponse,
@@ -32,12 +32,12 @@ export default class CategoryController {
     };
 
     static getCategory: RequestHandler = async (req, res) => {
-        const category: ICategory = await CategoryService.show(req.params.id);
+        const category: ICategoryData = await CategoryService.show(req.params.id);
         res.status(STATUS_CODE.OK).json(<IGetCategoryResponse>{ status: true, data: category });
     };
 
     static getAllCategories: RequestHandler = async (_, res) => {
-        const allCategories: ICategory[] = await CategoryService.list();
+        const allCategories: ICategoryData[] = await CategoryService.list();
         res.status(STATUS_CODE.OK).json(<IGetAllCategoryResponse>{
             status: true,
             data: allCategories,
@@ -45,7 +45,7 @@ export default class CategoryController {
     };
 
     static editCategoryPosition: RequestHandler = async (req, res) => {
-        const category: ICategory = await CategoryService.position(req.params.id, req.body);
+        const category: ICategoryData = await CategoryService.position(req.params.id, req.body);
         res.status(STATUS_CODE.OK).json(<IEditCategoryPositionResponse>{
             status: true,
             data: category,
@@ -53,7 +53,7 @@ export default class CategoryController {
     };
 
     static editCategorySiblingOrder: RequestHandler = async (req, res) => {
-        const category: ICategory = await CategoryService.siblingorder(req.params.id, req.body);
+        const category: ICategoryData = await CategoryService.siblingorder(req.params.id, req.body);
         res.status(STATUS_CODE.OK).json(<IEditCategorySiblingOrderResponse>{
             status: true,
             data: category,
@@ -61,7 +61,7 @@ export default class CategoryController {
     };
 
     static editCategory: RequestHandler = async (req, res) => {
-        const category: ICategory = await CategoryService.edit(req.params.id, req.body);
+        const category: ICategoryData = await CategoryService.edit(req.params.id, req.body);
         res.status(STATUS_CODE.OK).json(<IEditCategoryResponse>{
             status: true,
             data: category,
