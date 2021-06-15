@@ -12,7 +12,7 @@ import {
 } from '@sellerspot/universal-types';
 import { CategoryService } from 'services/services';
 
-export default class CategoryController {
+export class CategoryController {
     static createCategory: RequestHandler = async (req, res) => {
         const { title, parentId } = <ICreateCategoryRequest>req.body;
         const { title: createdTitle, id, parent } = await CategoryService.create({

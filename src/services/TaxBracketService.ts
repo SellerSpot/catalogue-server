@@ -1,1 +1,1 @@
-export default class TaxBracketService {}
+export class TaxBracketService {}

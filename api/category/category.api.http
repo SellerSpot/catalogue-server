@@ -12,8 +12,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "title":"jarius",
-  "parentId":"60a4161968d5f47f0ccc03fe"
+  "title":"jarius"
 }
 ###
 

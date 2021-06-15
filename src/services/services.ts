@@ -1,4 +1,4 @@
-export { default as CategoryService } from './CategoryService';
-export { default as BrandService } from './BrandService';
-export { default as ProductService } from './ProductService';
-export { default as TaxBracketService } from './TaxBracketService';
+export * from './CategoryService';
+export * from './BrandService';
+export * from './ProductService';
+export * from './TaxBracketService';

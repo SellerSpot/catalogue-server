@@ -3,7 +3,7 @@ import { tenantDbServices, tenantDbModels } from '@sellerspot/database-models';
 
 type TBrand = tenantDbModels.catalogueModels.IBrand;
 
-export default class BrandService {
+export class BrandService {
     static async show(brandId: string): Promise<IBrandData> {
         const { getBrand } = tenantDbServices.catalogue;
         const brand: TBrand = await getBrand(brandId);
