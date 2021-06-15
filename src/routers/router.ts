@@ -3,6 +3,7 @@ import { IResponse, ROUTES, STATUS_CODE } from '@sellerspot/universal-types';
 import categoryRouter from './category';
 import brandRouter from './brand';
 import productRouter from './product';
+import taxBracketRouter from './taxBracket';
 
 const rootRouter = Router();
 
@@ -10,6 +11,7 @@ rootRouter.use('/', categoryRouter);
 
 rootRouter.use('/', brandRouter);
 rootRouter.use('/', productRouter);
+rootRouter.use('/', taxBracketRouter);
 
 rootRouter.get(ROUTES.CATALOGUE.INFO, (_, res) => {
     res.status(STATUS_CODE.OK).send(<IResponse>{

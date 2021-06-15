@@ -12,6 +12,11 @@ export class ProductService {
         const product: IProduct = await createProduct(newProduct);
         return ProductService.getHash(product);
     }
+    static async show(productId: string): Promise<IProductData> {
+        const { getProduct } = tenantDbServices.catalogue;
+        const product: IProduct = await getProduct(productId);
+        return ProductService.getHash(product);
+    }
 
     static getHash(product: IProduct): IProductData {
         if (product) {

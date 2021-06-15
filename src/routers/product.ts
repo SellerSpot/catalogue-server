@@ -13,4 +13,10 @@ router.post(
     ProductController.createProduct,
 );
 
+router.get(
+    ROUTES.CATALOGUE.PRODUCT_GET,
+    middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
+    middlewares.auth,
+    ProductController.createProduct,
+);
 export default router;
