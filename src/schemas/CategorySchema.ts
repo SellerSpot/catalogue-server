@@ -7,7 +7,7 @@ import {
     IEditCategoryRequest,
 } from '@sellerspot/universal-types';
 
-export default class CategorySchema {
+export class CategorySchema {
     static createCategory = Joi.object<ICreateCategoryRequest>({
         title: Joi.string().max(255).required(),
         parentId: Joi.string().regex(RegexUtil.OBJECT_ID).optional(),

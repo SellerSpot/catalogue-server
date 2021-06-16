@@ -12,7 +12,7 @@ import {
 } from '@sellerspot/universal-types';
 import { BrandService } from 'services/services';
 
-export default class BrandController {
+export class BrandController {
     static createBrand: RequestHandler = async (req, res) => {
         const newBrand: IBrandData = await BrandService.create(<ICreateBrandRequest>req.body);
         res.status(STATUS_CODE.CREATED).send(<ICreateBrandResponse>{

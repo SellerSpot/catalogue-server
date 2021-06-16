@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { IEditBrandRequest, ICreateBrandRequest } from '@sellerspot/universal-types';
 
-export default class BrandSchema {
+export class BrandSchema {
     static createBrand = Joi.object<ICreateBrandRequest>({
         name: Joi.string().max(255).required(),
     });

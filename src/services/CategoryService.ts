@@ -8,10 +8,10 @@ import {
 } from '@sellerspot/universal-types';
 import { isEmpty } from 'lodash';
 
-type TCategory = tenantDbModels.catalogueModels.ICategoryData;
+type TCategory = tenantDbModels.catalogueModels.ICategory;
 type TCategoryDoc = tenantDbModels.catalogueModels.ICategoryDoc;
 
-export default class CategoryService {
+export class CategoryService {
     static async create(newCategory: ICreateCategoryRequest): Promise<TCategory> {
         const { createCategory } = tenantDbServices.catalogue;
         const { title, parentId } = newCategory;
