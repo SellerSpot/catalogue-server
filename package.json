@@ -7,7 +7,7 @@
         "start": "node dist",
         "build:dev": "webpack --mode development --env ENV=development",
         "dev": "cross-env ENV=development ts-node-dev --respawn -r tsconfig-paths/register --transpile-only -- src/index.ts",
-        "degug": "cross-env ENV=development ts-node-dev --respawn -r tsconfig-paths/register --transpile-only --inspect-brk -- src/index.ts",
+        "debug": "cross-env ENV=development ts-node-dev --respawn -r tsconfig-paths/register --transpile-only --inspect-brk -- src/index.ts",
         "build": "webpack --mode production --env ENV=production",
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
