@@ -2,7 +2,7 @@ import { middlewares } from '@sellerspot/universal-functions';
 import { ROUTES } from '@sellerspot/universal-types';
 import { ProductSchema, CommonSchema } from 'schemas/schemas';
 import { Router } from 'express';
-import { ProductController } from 'controllers/ProductController';
+import { ProductController } from 'controllers/controllers';
 
 const router = Router();
 

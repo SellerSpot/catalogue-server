@@ -4,6 +4,7 @@ import categoryRouter from './category';
 import brandRouter from './brand';
 import productRouter from './product';
 import taxBracketRouter from './taxBracket';
+import stockUnitRouter from './stockUnit';
 
 const rootRouter = Router();
 
@@ -12,6 +13,7 @@ rootRouter.use('/', categoryRouter);
 rootRouter.use('/', brandRouter);
 rootRouter.use('/', productRouter);
 rootRouter.use('/', taxBracketRouter);
+rootRouter.use('/', stockUnitRouter);
 
 rootRouter.get(ROUTES.CATALOGUE.INFO, (_, res) => {
     res.status(STATUS_CODE.OK).send(<IResponse>{
