@@ -23,7 +23,7 @@ router.post(
 );
 
 router.put(
-    ROUTES.CATALOGUE.CATEGORY.EDIT_CATEGORY_POSITION,
+    ROUTES.CATALOGUE.CATEGORY.EDIT_POSITION,
     middlewares.validateSchema({
         pathParamSchema: CommonSchema.resourcePathParam,
         bodySchema: CategorySchema.editCategoryPosition,
