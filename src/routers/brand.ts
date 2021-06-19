@@ -9,21 +9,21 @@ const router = Router();
 router.get(ROUTES.CATALOGUE.BRAND_GET_ALL, middlewares.auth, BrandController.getAllBrand);
 
 router.get(
-    ROUTES.CATALOGUE.BRAND_GET,
+    ROUTES.CATALOGUE.BRAND.GET,
     middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,
     BrandController.getBrand,
 );
 
 router.post(
-    ROUTES.CATALOGUE.BRAND_CREATE,
+    ROUTES.CATALOGUE.BRAND.CREATE,
     middlewares.validateSchema({ bodySchema: BrandSchema.createBrand }),
     middlewares.auth,
     BrandController.createBrand,
 );
 
 router.put(
-    ROUTES.CATALOGUE.BRAND_EDIT,
+    ROUTES.CATALOGUE.BRAND.EDIT,
     middlewares.validateSchema({
         pathParamSchema: CommonSchema.resourcePathParam,
         bodySchema: BrandSchema.editBrand,
@@ -33,7 +33,7 @@ router.put(
 );
 
 router.delete(
-    ROUTES.CATALOGUE.BRAND_DELETE,
+    ROUTES.CATALOGUE.BRAND.DELETE,
     middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,
     BrandController.deleteBrand,
