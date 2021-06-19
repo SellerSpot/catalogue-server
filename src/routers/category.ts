@@ -6,24 +6,24 @@ import { CategoryController } from 'controllers/controllers';
 
 const router = Router();
 
-router.get(ROUTES.CATALOGUE.CATEGORY_LIST, middlewares.auth, CategoryController.getAllCategories);
+router.get(ROUTES.CATALOGUE.CATEGORY.LIST, middlewares.auth, CategoryController.getAllCategories);
 
 router.get(
-    ROUTES.CATALOGUE.CATAGORY_GET,
+    ROUTES.CATALOGUE.CATEGORY.GET,
     middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,
     CategoryController.getCategory,
 );
 
 router.post(
-    ROUTES.CATALOGUE.CATAGORY_CREATE,
+    ROUTES.CATALOGUE.CATEGORY.CREATE,
     middlewares.validateSchema({ bodySchema: CategorySchema.createCategory }),
     middlewares.auth,
     CategoryController.createCategory,
 );
 
 router.put(
-    ROUTES.CATALOGUE.CATAGORY_EDIT_CATEGORY_POSITION,
+    ROUTES.CATALOGUE.CATEGORY.EDIT_CATEGORY_POSITION,
     middlewares.validateSchema({
         pathParamSchema: CommonSchema.resourcePathParam,
         bodySchema: CategorySchema.editCategoryPosition,
@@ -33,7 +33,7 @@ router.put(
 );
 
 router.put(
-    ROUTES.CATALOGUE.CATAGORY_EDIT_SIBLING_ORDER,
+    ROUTES.CATALOGUE.CATEGORY.EDIT_SIBLING_ORDER,
     middlewares.validateSchema({
         pathParamSchema: CommonSchema.resourcePathParam,
         bodySchema: CategorySchema.editSiblingOrder,
@@ -43,7 +43,7 @@ router.put(
 );
 
 router.put(
-    ROUTES.CATALOGUE.CATAGORY_EDIT,
+    ROUTES.CATALOGUE.CATEGORY.EDIT,
     middlewares.validateSchema({
         pathParamSchema: CommonSchema.resourcePathParam,
         bodySchema: CategorySchema.editCategory,
@@ -53,7 +53,7 @@ router.put(
 );
 
 router.delete(
-    ROUTES.CATALOGUE.CATAGORY_DELETE,
+    ROUTES.CATALOGUE.CATEGORY.DELETE,
     middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,
     CategoryController.deleteCategory,
