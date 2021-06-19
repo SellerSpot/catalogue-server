@@ -1,0 +1,46 @@
+@serviceresource =  catalogue/stockunits
+@stockUnitId = 60ce0c4a711b0d6de891ff6f
+
+
+###
+// @name create_stock_unit
+POST {{devProxyBaseUrl}}/{{serviceresource}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name":"Sample"
+}
+###
+
+
+###
+// @name get_stock_units
+GET {{devProxyBaseUrl}}/{{serviceresource}} HTTP/1.1
+Authorization: Bearer {{token}}
+###
+
+
+###
+// @name get_stock_unit
+GET {{devProxyBaseUrl}}/{{serviceresource}}/{{stockUnitId}} HTTP/1.1
+Authorization: Bearer {{token}}
+###
+
+###
+// @name edit_stock_unit
+PUT {{devProxyBaseUrl}}/{{serviceresource}}/{{stockUnitId}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name":"Pieces"
+}
+###
+
+
+###
+// @name delete_brand
+DELETE {{devProxyBaseUrl}}/{{serviceresource}}/{{stockUnitId}} HTTP/1.1
+Authorization: Bearer {{token}}
+###
