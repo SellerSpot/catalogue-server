@@ -8,15 +8,14 @@ import {
 } from '@sellerspot/universal-types';
 import { isEmpty } from 'lodash';
 
-type TCategory = tenantDbModels.catalogueModels.ICategory;
 type TCategoryDoc = tenantDbModels.catalogueModels.ICategoryDoc;
 
 export class CategoryService {
-    static async create(newCategory: ICreateCategoryRequest): Promise<TCategory> {
+    static async create(newCategory: ICreateCategoryRequest): Promise<TCategoryDoc> {
         const { createCategory } = tenantDbServices.catalogue;
         const { title, parentId } = newCategory;
         const category = await createCategory({ title, parent: parentId });
-        return <TCategory>category.toJSON();
+        return <TCategoryDoc>category.toJSON();
     }
 
     static async show(categoryId: string): Promise<ICategoryData> {

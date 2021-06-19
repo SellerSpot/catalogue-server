@@ -6,7 +6,11 @@ import { StockUnitController } from 'controllers/controllers';
 
 const router = Router();
 
-router.get(ROUTES.CATALOGUE.STOCK_UNIT.LIST, middlewares.auth, StockUnitController.getAllStockUnit);
+router.get(
+    ROUTES.CATALOGUE.STOCK_UNIT.GET_ALL,
+    middlewares.auth,
+    StockUnitController.getAllStockUnit,
+);
 
 router.get(
     ROUTES.CATALOGUE.STOCK_UNIT.GET,
