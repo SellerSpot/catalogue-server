@@ -8,7 +8,6 @@ import taxBracketRouter from './taxBracket';
 const rootRouter = Router();
 
 rootRouter.use('/', categoryRouter);
-
 rootRouter.use('/', brandRouter);
 rootRouter.use('/', productRouter);
 rootRouter.use('/', taxBracketRouter);
