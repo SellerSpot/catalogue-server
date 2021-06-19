@@ -7,7 +7,7 @@ import { TaxBracketSchema, CommonSchema } from 'schemas/schemas';
 const router = Router();
 
 router.get(
-    ROUTES.CATALOGUE.TAX_BRACKET_LIST,
+    ROUTES.CATALOGUE.TAX_BRACKET_GET_ALL,
     middlewares.auth,
     TaxBracketController.getAllTaxBracket,
 );
