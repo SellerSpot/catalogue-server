@@ -6,24 +6,24 @@ import { StockUnitController } from 'controllers/controllers';
 
 const router = Router();
 
-router.get(ROUTES.CATALOGUE.STOCK_UNIT_LIST, middlewares.auth, StockUnitController.getAllStockUnit);
+router.get(ROUTES.CATALOGUE.STOCK_UNIT.LIST, middlewares.auth, StockUnitController.getAllStockUnit);
 
 router.get(
-    ROUTES.CATALOGUE.STOCK_UNIT_GET,
+    ROUTES.CATALOGUE.STOCK_UNIT.GET,
     middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,
     StockUnitController.getStockUnit,
 );
 
 router.post(
-    ROUTES.CATALOGUE.STOCK_UNIT_CREATE,
+    ROUTES.CATALOGUE.STOCK_UNIT.CREATE,
     middlewares.validateSchema({ bodySchema: StockUnitSchema.createStockUnit }),
     middlewares.auth,
     StockUnitController.createStockUnit,
 );
 
 router.put(
-    ROUTES.CATALOGUE.STOCK_UNIT_EDIT,
+    ROUTES.CATALOGUE.STOCK_UNIT.EDIT,
     middlewares.validateSchema({
         pathParamSchema: CommonSchema.resourcePathParam,
         bodySchema: StockUnitSchema.editStockUnit,
@@ -33,7 +33,7 @@ router.put(
 );
 
 router.delete(
-    ROUTES.CATALOGUE.STOCK_UNIT_DELETE,
+    ROUTES.CATALOGUE.STOCK_UNIT.DELETE,
     middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,
     StockUnitController.deleteStockUnit,
