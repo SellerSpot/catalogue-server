@@ -1,27 +1,27 @@
 import { tenantDbModels, tenantDbServices } from '@sellerspot/database-models';
 import {
-    ITaxBracketRequest,
+    ICreateTaxBracketRequest,
     ITaxBracketData,
-    ITaxGroupRequest,
+    ICreateTaxGroupRequest,
     ITaxGroupData,
-    IGetAllTaxBracketResponse,
+    IGetAllTaxDataResponse,
 } from '@sellerspot/universal-types';
 
 type TTaxBracket = tenantDbModels.catalogueModels.ITaxBracket;
 export class TaxBracketService {
-    static async createBracket(bracketProps: ITaxBracketRequest): Promise<ITaxBracketData> {
+    static async createBracket(bracketProps: ICreateTaxBracketRequest): Promise<ITaxBracketData> {
         const { createTaxBracket } = tenantDbServices.catalogue;
         const taxBracket = await createTaxBracket(bracketProps);
         return TaxBracketService.getBracketHash(taxBracket);
     }
 
-    static async createGroup(groupProps: ITaxGroupRequest): Promise<ITaxGroupData> {
+    static async createGroup(groupProps: ICreateTaxGroupRequest): Promise<ITaxGroupData> {
         const { createTaxGroup } = tenantDbServices.catalogue;
         const taxBracket = await createTaxGroup(groupProps);
         return TaxBracketService.getGroupHash(taxBracket);
     }
 
-    static async list(): Promise<IGetAllTaxBracketResponse['data']> {
+    static async list(): Promise<IGetAllTaxDataResponse['data']> {
         const { getAllTaxBrackets } = tenantDbServices.catalogue;
         const taxBrackets = await getAllTaxBrackets();
         return TaxBracketService.buildListTaxBrackets(taxBrackets);
@@ -29,7 +29,7 @@ export class TaxBracketService {
 
     private static buildListTaxBrackets(
         taxBrackets: TTaxBracket[],
-    ): IGetAllTaxBracketResponse['data'] {
+    ): IGetAllTaxDataResponse['data'] {
         const taxBracketList: ITaxBracketData[] = [];
         const taxGroupList: ITaxGroupData[] = [];
         if (taxBrackets && taxBrackets.length > 0) {
