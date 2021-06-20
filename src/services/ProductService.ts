@@ -1,13 +1,9 @@
 import { IProductData, IProductRequest } from '@sellerspot/universal-types';
 import { tenantDbModels, tenantDbServices } from '@sellerspot/database-models';
-import {
-    IBrand,
-    ICategoryDoc,
-    IProduct,
-} from '@sellerspot/database-models/dist/models/tenantDb/catalogueModels';
 
 type ICategoryDoc = tenantDbModels.catalogueModels.ICategoryDoc;
 type IProduct = tenantDbModels.catalogueModels.IProduct;
+type IBrand = tenantDbModels.catalogueModels.IBrand;
 export class ProductService {
     static async create(newProduct: IProductRequest): Promise<IProductData> {
         const { createProduct } = tenantDbServices.catalogue;
