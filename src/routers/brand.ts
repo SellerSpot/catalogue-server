@@ -6,7 +6,7 @@ import { BrandController } from 'controllers/controllers';
 
 const router = Router();
 
-router.get(ROUTES.CATALOGUE.BRAND_GET_ALL, middlewares.auth, BrandController.getAllBrand);
+router.get(ROUTES.CATALOGUE.BRAND.GET_ALL, middlewares.auth, BrandController.getAllBrand);
 
 router.get(
     ROUTES.CATALOGUE.BRAND.GET,
