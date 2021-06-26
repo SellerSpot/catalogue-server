@@ -15,20 +15,14 @@ import { CategoryService } from 'services/services';
 export class CategoryController {
     static createCategory: RequestHandler = async (req, res) => {
         const { title, parentId } = <ICreateCategoryRequest>req.body;
-        const { title: createdTitle, id, parent } = await CategoryService.create({
+        const response: ICategoryData = await CategoryService.create({
             title,
             parentId,
         });
-
-        const response: ICreateCategoryResponse = {
+        res.status(STATUS_CODE.CREATED).json(<ICreateCategoryResponse>{
             status: true,
-            data: {
-                id,
-                title: createdTitle,
-                parentId: <string>parent,
-            },
-        };
-        res.status(STATUS_CODE.CREATED).json(response);
+            data: response,
+        });
     };
 
     static getCategory: RequestHandler = async (req, res) => {
