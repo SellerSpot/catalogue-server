@@ -7,24 +7,39 @@ import {
     IEditCategoryRequest,
 } from '@sellerspot/universal-types';
 import { isEmpty } from 'lodash';
+import { Types } from 'mongoose';
 
-type TCategoryDoc = tenantDbModels.catalogueModels.ICategoryDoc;
+type ICategoryDoc = tenantDbModels.catalogueModels.ICategoryDoc;
 
 export class CategoryService {
-    static async create(newCategory: ICreateCategoryRequest): Promise<TCategoryDoc> {
+    static async create(newCategory: ICreateCategoryRequest): Promise<ICategoryData> {
         const { createCategory } = tenantDbServices.catalogue;
-        const { title, parentId } = newCategory;
-        const category = await createCategory({ title, parent: parentId });
-        return <TCategoryDoc>category.toJSON();
+        const category = await createCategory(newCategory);
+        const { id, parent, title } = category;
+        const parentStr = (<Types.ObjectId>parent)?.toHexString();
+        const categoryRes: ICategoryData = {
+            id,
+            title,
+            parentId: parentStr,
+        };
+        return categoryRes;
     }
 
     static async show(categoryId: string): Promise<ICategoryData> {
         const { getCategoryById } = tenantDbServices.catalogue;
-        const { id, title, children } = await getCategoryById(categoryId);
-        const childrenHash = (<TCategoryDoc[]>children).map((child) => {
-            return { id: <string>child.id, title: child.title };
-        });
-        return { id, title, children: childrenHash };
+        const { id, title, parent, children } = await getCategoryById(categoryId);
+        const childrenHash = (<ICategoryData[]>children).map((child) => ({
+            id: child.id,
+            title: child.title,
+            parent: child.parentId,
+        }));
+        const categoryRes: ICategoryData = {
+            id,
+            title,
+            parentId: (<Types.ObjectId>parent).toHexString(),
+            children: childrenHash,
+        };
+        return categoryRes;
     }
 
     static async position(
@@ -32,8 +47,13 @@ export class CategoryService {
         pos: IEditCategoryPositionRequest,
     ): Promise<ICategoryData> {
         const { editCategoryPosition } = tenantDbServices.catalogue;
-        const { id, title, parent: parentId } = await editCategoryPosition(categoryId, pos);
-        return { id, title, parentId: <string>parentId };
+        const { id, title, parent } = await editCategoryPosition(categoryId, pos);
+        const categoryRes: ICategoryData = {
+            id,
+            title,
+            parentId: (<Types.ObjectId>parent).toHexString(),
+        };
+        return categoryRes;
     }
 
     static async edit(
@@ -51,7 +71,7 @@ export class CategoryService {
     ): Promise<ICategoryData> {
         const { editCategorySiblingOrder } = tenantDbServices.catalogue;
         const { id, title, children } = await editCategorySiblingOrder(categoryId, siblingArr);
-        const childrenHash = (<TCategoryDoc[]>children).map((child) => {
+        const childrenHash = (<ICategoryDoc[]>children).map((child) => {
             return { id: <string>child.id, title: child.title };
         });
         return { id, title, children: childrenHash };
@@ -64,10 +84,10 @@ export class CategoryService {
 
     static async list(): Promise<ICategoryData[]> {
         const { getAllCategory } = tenantDbServices.catalogue;
-        const allCategory: TCategoryDoc[] = await getAllCategory();
+        const allCategory: ICategoryDoc[] = await getAllCategory();
         const categoryList: ICategoryData[] = [];
         if (!isEmpty(allCategory)) {
-            const categoryIdVsCategory: Record<string, TCategoryDoc> = {};
+            const categoryIdVsCategory: Record<string, ICategoryDoc> = {};
             allCategory.forEach((currCategory) => {
                 const currentId = currCategory.id;
                 categoryIdVsCategory[currentId] = currCategory;
@@ -76,8 +96,8 @@ export class CategoryService {
             const rootCategory = allCategory[0];
 
             if (!isEmpty(rootCategory.children)) {
-                for (let topCategoryId of rootCategory.children) {
-                    topCategoryId = topCategoryId.toString();
+                for (const currCategory of rootCategory.children) {
+                    const topCategoryId = (<Types.ObjectId>currCategory).toHexString();
                     const topCategoryHash = CategoryService.buildCategoryRecursively(
                         topCategoryId,
                         categoryIdVsCategory,
@@ -93,7 +113,7 @@ export class CategoryService {
 
     private static buildCategoryRecursively(
         categoryId: string,
-        categoryIdVsCategory: Record<string, TCategoryDoc>,
+        categoryIdVsCategory: Record<string, ICategoryDoc>,
     ): ICategoryData {
         const categoryHash = <ICategoryData>{};
 
@@ -105,10 +125,10 @@ export class CategoryService {
             categoryHash.title = title;
             const childCategoryList: ICategoryData[] = [];
             if (children.length || children.length !== 0) {
-                for (let child of children) {
-                    child = child.toString();
+                for (const child of children) {
+                    const childId = (<Types.ObjectId>child).toHexString();
                     const childHash = CategoryService.buildCategoryRecursively(
-                        child,
+                        childId,
                         categoryIdVsCategory,
                     );
                     if (!isEmpty(childHash)) {
@@ -121,7 +141,6 @@ export class CategoryService {
                 categoryHash.children = childCategoryList;
             }
         }
-
         return categoryHash;
     }
 }
