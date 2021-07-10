@@ -12,7 +12,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "title":"jarius"
+  "title":"jeswin",
+  "parentId": "60d7508a84cf99f3b5df700b"
 }
 ###
 
@@ -24,13 +25,13 @@ Authorization: Bearer {{token}}
 
 ###
 // @name get_category
-GET {{devProxyBaseUrl}}/{{serviceresource}}/609f929901d9974e19d489b9 HTTP/1.1
+GET {{devProxyBaseUrl}}/{{serviceresource}}/60d7505784cf99f3b5df7009 HTTP/1.1
 Authorization: Bearer {{token}}
 ###
 
 ###
 // @name edit_category
-PUT {{devProxyBaseUrl}}/{{serviceresource}}/60a4164668d5f47f0ccc0400 HTTP/1.1
+PUT {{devProxyBaseUrl}}/{{serviceresource}}/60d7505784cf99f3b5df7009 HTTP/1.1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

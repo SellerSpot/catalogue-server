@@ -7,7 +7,7 @@ import {
     IGetAllTaxDataResponse,
 } from '@sellerspot/universal-types';
 
-type TTaxBracket = tenantDbModels.catalogueModels.ITaxBracket;
+type TTaxBracket = tenantDbModels.catalogueModels.ITaxBracketDoc;
 export class TaxBracketService {
     static async createBracket(bracketProps: ICreateTaxBracketRequest): Promise<ITaxBracketData> {
         const { createTaxBracket } = tenantDbServices.catalogue;

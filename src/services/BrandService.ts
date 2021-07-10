@@ -1,7 +1,7 @@
 import { IBrandData, ICreateBrandRequest, IEditBrandRequest } from '@sellerspot/universal-types';
 import { tenantDbServices, tenantDbModels } from '@sellerspot/database-models';
 
-type TBrand = tenantDbModels.catalogueModels.IBrand;
+type TBrand = tenantDbModels.catalogueModels.IBrandDoc;
 
 export class BrandService {
     static async show(brandId: string): Promise<IBrandData> {
