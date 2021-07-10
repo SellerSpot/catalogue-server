@@ -1,5 +1,5 @@
 @serviceresource =  catalogue/brands
-@brandId = 60bbeeb8f8e1c1aeacbd2783
+@brandId = 60d7500584cf99f3b5df7005
 
 
 ###
@@ -9,7 +9,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name":"RohitRaj"
+  "name":"RohitRaj3"
 }
 ###
 

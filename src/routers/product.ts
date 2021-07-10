@@ -13,10 +13,25 @@ router.post(
     ProductController.createProduct,
 );
 
+router.put(
+    ROUTES.CATALOGUE.PRODUCT.EDIT,
+    middlewares.validateSchema({
+        pathParamSchema: CommonSchema.resourcePathParam,
+        bodySchema: ProductSchema.editProduct,
+    }),
+    middlewares.auth,
+    ProductController.editProduct,
+);
+
 router.get(
     ROUTES.CATALOGUE.PRODUCT.GET,
     middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,
-    ProductController.createProduct,
+    ProductController.getProduct,
 );
+
+router.get(ROUTES.CATALOGUE.PRODUCT.GET_ALL, middlewares.auth, ProductController.getAllProduct);
+
+router.delete(ROUTES.CATALOGUE.PRODUCT.DELETE, middlewares.auth, ProductController.deleteProduct);
+
 export default router;
