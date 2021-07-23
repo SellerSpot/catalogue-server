@@ -12,79 +12,9 @@ import { Types } from 'mongoose';
 type ICategoryDoc = tenantDbModels.catalogueModels.ICategoryDoc;
 
 export class CategoryService {
-    static async create(newCategory: ICreateCategoryRequest): Promise<ICategoryData> {
-        const { createCategory } = tenantDbServices.catalogue;
-        const category = await createCategory(newCategory);
-        const { id, parent, title } = category;
-        const parentStr = (<Types.ObjectId>parent)?.toHexString();
-        const categoryRes: ICategoryData = {
-            id,
-            title,
-            parentId: parentStr,
-        };
-        return categoryRes;
-    }
-
-    static async show(categoryId: string): Promise<ICategoryData> {
-        const { getCategoryById } = tenantDbServices.catalogue;
-        const { id, title, parent, children } = await getCategoryById(categoryId);
-        const childrenHash = (<ICategoryData[]>children).map((child) => ({
-            id: child.id,
-            title: child.title,
-            parent: child.parentId,
-        }));
-        const categoryRes: ICategoryData = {
-            id,
-            title,
-            parentId: (<Types.ObjectId>parent).toHexString(),
-            children: childrenHash,
-        };
-        return categoryRes;
-    }
-
-    static async position(
-        categoryId: string,
-        pos: IEditCategoryPositionRequest,
-    ): Promise<ICategoryData> {
-        const { editCategoryPosition } = tenantDbServices.catalogue;
-        const { id, title, parent } = await editCategoryPosition(categoryId, pos);
-        const categoryRes: ICategoryData = {
-            id,
-            title,
-            parentId: (<Types.ObjectId>parent).toHexString(),
-        };
-        return categoryRes;
-    }
-
-    static async edit(
-        categoryId: string,
-        categoryMeta: IEditCategoryRequest,
-    ): Promise<ICategoryData> {
-        const { editCategoryContent } = tenantDbServices.catalogue;
-        const { id, title } = await editCategoryContent(categoryId, categoryMeta);
-        return { id, title };
-    }
-
-    static async siblingorder(
-        categoryId: string,
-        siblingArr: IEditCategorySiblingOrderRequest,
-    ): Promise<ICategoryData> {
-        const { editCategorySiblingOrder } = tenantDbServices.catalogue;
-        const { id, title, children } = await editCategorySiblingOrder(categoryId, siblingArr);
-        const childrenHash = (<ICategoryDoc[]>children).map((child) => {
-            return { id: <string>child.id, title: child.title };
-        });
-        return { id, title, children: childrenHash };
-    }
-
-    static async delete(categoryId: string): Promise<void> {
-        const { deleteCategory } = tenantDbServices.catalogue;
-        await deleteCategory(categoryId);
-    }
-
-    static async list(): Promise<ICategoryData[]> {
-        const { getAllCategory } = tenantDbServices.catalogue;
-        const allCategory: ICategoryDoc[] = await getAllCategory();
+    static async getAllCategory(): Promise<ICategoryData[]> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const allCategory: ICategoryDoc[] = await catalogueDbService.getAllCategory();
         const categoryList: ICategoryData[] = [];
         if (!isEmpty(allCategory)) {
             const categoryIdVsCategory: Record<string, ICategoryDoc> = {};
@@ -98,12 +28,12 @@ export class CategoryService {
             if (!isEmpty(rootCategory.children)) {
                 for (const currCategory of rootCategory.children) {
                     const topCategoryId = (<Types.ObjectId>currCategory).toHexString();
-                    const topCategoryHash = CategoryService.buildCategoryRecursively(
+                    const topCategoryData = CategoryService.buildCategoryRecursively(
                         topCategoryId,
                         categoryIdVsCategory,
                     );
-                    if (!isEmpty(topCategoryHash)) {
-                        categoryList.push(topCategoryHash);
+                    if (!isEmpty(topCategoryData)) {
+                        categoryList.push(topCategoryData);
                     }
                 }
             }
@@ -111,36 +41,117 @@ export class CategoryService {
         return categoryList;
     }
 
+    static async getCategory(categoryId: string): Promise<ICategoryData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const { id, title, parent, children } = await catalogueDbService.getCategoryById(
+            categoryId,
+        );
+        const childrenData = (<ICategoryData[]>children).map((child) => ({
+            id: child.id,
+            title: child.title,
+            parent: child.parentId,
+        }));
+        const categoryRes: ICategoryData = {
+            id,
+            title,
+            parentId: (<Types.ObjectId>parent).toHexString(),
+            children: childrenData,
+        };
+        return categoryRes;
+    }
+
+    static async createCategory(newCategory: ICreateCategoryRequest): Promise<ICategoryData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const category = await catalogueDbService.createCategory(newCategory);
+        const { id, parent, title } = category;
+        const parentStr = (<Types.ObjectId>parent)?.toHexString();
+        const categoryRes: ICategoryData = {
+            id,
+            title,
+            parentId: parentStr,
+        };
+        return categoryRes;
+    }
+
+    static async editCategoryPosition(
+        categoryId: string,
+        pos: IEditCategoryPositionRequest,
+    ): Promise<ICategoryData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const { id, title, parent } = await catalogueDbService.editCategoryPosition(
+            categoryId,
+            pos,
+        );
+        const categoryRes: ICategoryData = {
+            id,
+            title,
+            parentId: (<Types.ObjectId>parent).toHexString(),
+        };
+        return categoryRes;
+    }
+
+    static async editCategoryContent(
+        categoryId: string,
+        categoryMeta: IEditCategoryRequest,
+    ): Promise<ICategoryData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const { id, title } = await catalogueDbService.editCategoryContent(
+            categoryId,
+            categoryMeta,
+        );
+        return { id, title };
+    }
+
+    static async editCategorySiblingOrder(
+        categoryId: string,
+        siblingArr: IEditCategorySiblingOrderRequest,
+    ): Promise<ICategoryData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const { id, title, children } = await catalogueDbService.editCategorySiblingOrder(
+            categoryId,
+            siblingArr,
+        );
+        const childrenData = (<ICategoryDoc[]>children).map((child) => {
+            return { id: <string>child.id, title: child.title };
+        });
+        return { id, title, children: childrenData };
+    }
+
+    static async deleteCategory(categoryId: string): Promise<void> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        await catalogueDbService.deleteCategory(categoryId);
+    }
+
     private static buildCategoryRecursively(
         categoryId: string,
         categoryIdVsCategory: Record<string, ICategoryDoc>,
     ): ICategoryData {
-        const categoryHash = <ICategoryData>{};
+        const categoryData = <ICategoryData>{};
 
         const currCategory = categoryIdVsCategory[categoryId];
 
         if (!isEmpty(currCategory)) {
             const { id, title, children } = currCategory;
-            categoryHash.id = id;
-            categoryHash.title = title;
+            categoryData.id = id;
+            categoryData.title = title;
             const childCategoryList: ICategoryData[] = [];
             if (children.length || children.length !== 0) {
                 for (const child of children) {
                     const childId = (<Types.ObjectId>child).toHexString();
-                    const childHash = CategoryService.buildCategoryRecursively(
+                    const childData = CategoryService.buildCategoryRecursively(
                         childId,
                         categoryIdVsCategory,
                     );
-                    if (!isEmpty(childHash)) {
-                        childCategoryList.push(childHash);
+                    if (!isEmpty(childData)) {
+                        childCategoryList.push(childData);
                     }
                 }
             }
 
             if (!isEmpty(childCategoryList)) {
-                categoryHash.children = childCategoryList;
+                categoryData.children = childCategoryList;
             }
         }
-        return categoryHash;
+        return categoryData;
     }
 }

@@ -15,7 +15,7 @@ import { CategoryService } from 'services/services';
 export class CategoryController {
     static createCategory: RequestHandler = async (req, res) => {
         const { title, parentId } = <ICreateCategoryRequest>req.body;
-        const response: ICategoryData = await CategoryService.create({
+        const response: ICategoryData = await CategoryService.createCategory({
             title,
             parentId,
         });
@@ -26,12 +26,12 @@ export class CategoryController {
     };
 
     static getCategory: RequestHandler = async (req, res) => {
-        const category: ICategoryData = await CategoryService.show(req.params.id);
+        const category: ICategoryData = await CategoryService.getCategory(req.params.id);
         res.status(STATUS_CODE.OK).json(<IGetCategoryResponse>{ status: true, data: category });
     };
 
     static getAllCategories: RequestHandler = async (_, res) => {
-        const allCategories: ICategoryData[] = await CategoryService.list();
+        const allCategories: ICategoryData[] = await CategoryService.getAllCategory();
         res.status(STATUS_CODE.OK).json(<IGetAllCategoryResponse>{
             status: true,
             data: allCategories,
@@ -39,7 +39,10 @@ export class CategoryController {
     };
 
     static editCategoryPosition: RequestHandler = async (req, res) => {
-        const category: ICategoryData = await CategoryService.position(req.params.id, req.body);
+        const category: ICategoryData = await CategoryService.editCategoryPosition(
+            req.params.id,
+            req.body,
+        );
         res.status(STATUS_CODE.OK).json(<IEditCategoryPositionResponse>{
             status: true,
             data: category,
@@ -47,7 +50,10 @@ export class CategoryController {
     };
 
     static editCategorySiblingOrder: RequestHandler = async (req, res) => {
-        const category: ICategoryData = await CategoryService.siblingorder(req.params.id, req.body);
+        const category: ICategoryData = await CategoryService.editCategorySiblingOrder(
+            req.params.id,
+            req.body,
+        );
         res.status(STATUS_CODE.OK).json(<IEditCategorySiblingOrderResponse>{
             status: true,
             data: category,
@@ -55,7 +61,10 @@ export class CategoryController {
     };
 
     static editCategory: RequestHandler = async (req, res) => {
-        const category: ICategoryData = await CategoryService.edit(req.params.id, req.body);
+        const category: ICategoryData = await CategoryService.editCategoryContent(
+            req.params.id,
+            req.body,
+        );
         res.status(STATUS_CODE.OK).json(<IEditCategoryResponse>{
             status: true,
             data: category,
@@ -63,7 +72,7 @@ export class CategoryController {
     };
 
     static deleteCategory: RequestHandler = async (req, res) => {
-        await CategoryService.delete(req.params.id);
+        await CategoryService.deleteCategory(req.params.id);
         res.status(STATUS_CODE.NO_CONTENT).send();
     };
 }

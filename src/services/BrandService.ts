@@ -4,41 +4,41 @@ import { tenantDbServices, tenantDbModels } from '@sellerspot/database-models';
 type TBrand = tenantDbModels.catalogueModels.IBrandDoc;
 
 export class BrandService {
-    static async show(brandId: string): Promise<IBrandData> {
-        const { getBrand } = tenantDbServices.catalogue;
-        const brand: TBrand = await getBrand(brandId);
-        return BrandService.getHash(brand);
+    static async getBrand(brandId: string): Promise<IBrandData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const brand: TBrand = await catalogueDbService.getBrand(brandId);
+        return BrandService.convertToBrandData(brand);
     }
 
-    static async list(): Promise<IBrandData[]> {
-        const { getAllBrand } = tenantDbServices.catalogue;
-        const brands: TBrand[] = await getAllBrand();
+    static async getAllBrand(): Promise<IBrandData[]> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const brands: TBrand[] = await catalogueDbService.getAllBrand();
         const allBrands: IBrandData[] = brands.map((brand) => ({ id: brand.id, name: brand.name }));
         return allBrands;
     }
 
-    static async create(newBrand: ICreateBrandRequest): Promise<IBrandData> {
-        const { createBrand } = tenantDbServices.catalogue;
-        const brand: TBrand = await createBrand(newBrand);
-        return BrandService.getHash(brand);
+    static async createBrand(newBrand: ICreateBrandRequest): Promise<IBrandData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const brand: TBrand = await catalogueDbService.createBrand(newBrand);
+        return BrandService.convertToBrandData(brand);
     }
 
-    static async edit(brandId: string, brand: IEditBrandRequest): Promise<IBrandData> {
-        const { editBrand } = tenantDbServices.catalogue;
-        const editedBrand: TBrand = await editBrand(brandId, brand);
-        return BrandService.getHash(editedBrand);
+    static async editBrand(brandId: string, brand: IEditBrandRequest): Promise<IBrandData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const editedBrand: TBrand = await catalogueDbService.editBrand(brandId, brand);
+        return BrandService.convertToBrandData(editedBrand);
     }
 
-    static async delete(brandId: string): Promise<void> {
-        const { deleteBrand } = tenantDbServices.catalogue;
-        await deleteBrand(brandId);
+    static async deleteBrand(brandId: string): Promise<void> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        await catalogueDbService.deleteBrand(brandId);
     }
 
-    private static getHash(brand: TBrand) {
+    private static convertToBrandData(brand: TBrand) {
         if (brand) {
             const { id, name } = brand;
-            const brandHash: IBrandData = { id, name };
-            return brandHash;
+            const brandData: IBrandData = { id, name };
+            return brandData;
         }
         return null;
     }
