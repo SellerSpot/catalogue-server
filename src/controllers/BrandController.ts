@@ -9,6 +9,7 @@ import {
     IBrandData,
     STATUS_CODE,
     ERROR_CODE,
+    ICommonResourcePathParam,
 } from '@sellerspot/universal-types';
 import { BrandService } from 'services/services';
 
@@ -22,7 +23,8 @@ export class BrandController {
     };
 
     static getBrand: RequestHandler = async (req, res) => {
-        const brand: IBrandData = await BrandService.show(req.params.id);
+        const params = (req.params as unknown) as ICommonResourcePathParam;
+        const brand: IBrandData = await BrandService.show(params.id);
         if (!brand) {
             return res.status(STATUS_CODE.NOT_FOUND).send(<IGetBrandResponse>{
                 status: false,
