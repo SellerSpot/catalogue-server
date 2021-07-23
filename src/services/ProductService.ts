@@ -6,64 +6,67 @@ type ICategoryDoc = tenantDbModels.catalogueModels.ICategoryDoc;
 type IProductDoc = tenantDbModels.catalogueModels.IProductDoc;
 type IBrandDoc = tenantDbModels.catalogueModels.IBrandDoc;
 export class ProductService {
-    static async create(newProduct: IProductRequest): Promise<IProductData> {
-        const { createProduct } = tenantDbServices.catalogue;
-        const product: IProductDoc = await createProduct(newProduct);
-        return ProductService.getHash(product);
+    static async createProduct(newProduct: IProductRequest): Promise<IProductData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const product: IProductDoc = await catalogueDbService.createProduct(newProduct);
+        return ProductService.convertToProductData(product);
     }
 
-    static async edit(
+    static async editProduct(
         productId: string,
         editProductProps: Partial<IProductRequest>,
     ): Promise<IProductData> {
-        const { editProduct } = tenantDbServices.catalogue;
-        const product: IProductDoc = await editProduct(productId, editProductProps);
-        return ProductService.getHash(product);
+        const catalogueDbService = tenantDbServices.catalogue;
+        const product: IProductDoc = await catalogueDbService.editProduct(
+            productId,
+            editProductProps,
+        );
+        return ProductService.convertToProductData(product);
     }
 
-    static async show(productId: string): Promise<IProductData> {
-        const { getProduct } = tenantDbServices.catalogue;
-        const product: IProductDoc = await getProduct(productId);
-        return ProductService.getHash(product);
+    static async getProduct(productId: string): Promise<IProductData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const product: IProductDoc = await catalogueDbService.getProduct(productId);
+        return ProductService.convertToProductData(product);
     }
 
-    static async list(): Promise<IProductData[]> {
-        const { getAllProduct } = tenantDbServices.catalogue;
-        const productList: IProductDoc[] = await getAllProduct();
-        return productList.map((product) => ProductService.getHash(product));
+    static async getAllProduct(): Promise<IProductData[]> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const productList: IProductDoc[] = await catalogueDbService.getAllProduct();
+        return productList.map((product) => ProductService.convertToProductData(product));
     }
 
-    static async delete(productId: string): Promise<void> {
-        const { deleteProduct } = tenantDbServices.catalogue;
-        await deleteProduct(productId);
+    static async deleteProduct(productId: string): Promise<void> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        await catalogueDbService.deleteProduct(productId);
     }
 
-    static getHash(product: IProductDoc): IProductData {
+    static convertToProductData(product: IProductDoc): IProductData {
         if (product) {
             const { id, name, description, brand, category, barcode, stockUnit } = product;
-            const productHash: IProductData = { id, name, description, barcode };
+            const productData: IProductData = { id, name, description, barcode };
             if (brand) {
                 const { name: brandName, id: brandId } = <IBrandDoc>brand;
-                productHash.brand = {
+                productData.brand = {
                     id: brandId,
                     name: brandName,
                 };
             }
             if (category) {
                 const { title, id: categoryId } = <ICategoryDoc>category;
-                productHash.category = {
+                productData.category = {
                     id: categoryId,
                     title,
                 };
             }
             if (stockUnit) {
                 const { name, id: stockUnitId } = <IStockUnitDoc>stockUnit;
-                productHash.stockUnit = {
+                productData.stockUnit = {
                     id: stockUnitId,
                     name,
                 };
             }
-            return productHash;
+            return productData;
         }
         return null;
     }

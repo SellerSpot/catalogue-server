@@ -14,7 +14,7 @@ import { StockUnitService } from 'services/services';
 
 export class StockUnitController {
     static createStockUnit: RequestHandler = async (req, res) => {
-        const newBrand: IBrandData = await StockUnitService.create(
+        const newBrand: IBrandData = await StockUnitService.createStockUnit(
             <ICreateStockUnitRequest>req.body,
         );
         res.status(STATUS_CODE.CREATED).send(<ICreateStockUnitResponse>{
@@ -24,7 +24,7 @@ export class StockUnitController {
     };
 
     static getStockUnit: RequestHandler = async (req, res) => {
-        const brand: IBrandData = await StockUnitService.show(req.params.id);
+        const brand: IBrandData = await StockUnitService.getStockUnit(req.params.id);
         if (!brand) {
             return res.status(STATUS_CODE.NOT_FOUND).send(<IGetStockUnitResponse>{
                 status: false,
@@ -40,7 +40,7 @@ export class StockUnitController {
     };
 
     static getAllStockUnit: RequestHandler = async (_, res) => {
-        const stockUnitList: IBrandData[] = await StockUnitService.list();
+        const stockUnitList: IBrandData[] = await StockUnitService.getAllStockUnit();
         res.status(STATUS_CODE.OK).send(<IGetAllStockUnitResponse>{
             status: true,
             data: stockUnitList,
@@ -48,7 +48,7 @@ export class StockUnitController {
     };
 
     static editStockUnit: RequestHandler = async (req, res) => {
-        const editedStockUnit: IBrandData = await StockUnitService.edit(
+        const editedStockUnit: IBrandData = await StockUnitService.editStockUnit(
             req.params.id,
             <IEditStockUnitRequest>req.body,
         );
@@ -67,7 +67,7 @@ export class StockUnitController {
     };
 
     static deleteStockUnit: RequestHandler = async (req, res) => {
-        await StockUnitService.delete(req.params.id);
+        await StockUnitService.deleteStockUnit(req.params.id);
         res.sendStatus(STATUS_CODE.NO_CONTENT);
     };
 }

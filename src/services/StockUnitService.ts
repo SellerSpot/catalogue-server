@@ -8,46 +8,49 @@ import { tenantDbServices, tenantDbModels } from '@sellerspot/database-models';
 type TStockUnitDoc = tenantDbModels.catalogueModels.IStockUnitDoc;
 
 export class StockUnitService {
-    static async show(stockUnitId: string): Promise<IStockUnitData> {
-        const { getStockUnit } = tenantDbServices.catalogue;
-        const stockUnit: TStockUnitDoc = await getStockUnit(stockUnitId);
-        return StockUnitService.getHash(stockUnit);
+    static async getStockUnit(stockUnitId: string): Promise<IStockUnitData> {
+        const catalogueService = tenantDbServices.catalogue;
+        const stockUnit: TStockUnitDoc = await catalogueService.getStockUnit(stockUnitId);
+        return StockUnitService.convertToStockUnitData(stockUnit);
     }
 
-    static async list(): Promise<IStockUnitData[]> {
-        const { getAllStockUnit } = tenantDbServices.catalogue;
-        const stockUnits: TStockUnitDoc[] = await getAllStockUnit();
+    static async getAllStockUnit(): Promise<IStockUnitData[]> {
+        const catalogueService = tenantDbServices.catalogue;
+        const stockUnits: TStockUnitDoc[] = await catalogueService.getAllStockUnit();
         const allStockUnits: IStockUnitData[] = stockUnits.map((stockUnit) =>
-            StockUnitService.getHash(stockUnit),
+            StockUnitService.convertToStockUnitData(stockUnit),
         );
         return allStockUnits;
     }
 
-    static async create(stockUnit: ICreateStockUnitRequest): Promise<IStockUnitData> {
-        const { createStockUnit } = tenantDbServices.catalogue;
-        const newStockUnit: TStockUnitDoc = await createStockUnit(stockUnit);
-        return StockUnitService.getHash(newStockUnit);
+    static async createStockUnit(stockUnit: ICreateStockUnitRequest): Promise<IStockUnitData> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const newStockUnit: TStockUnitDoc = await catalogueDbService.createStockUnit(stockUnit);
+        return StockUnitService.convertToStockUnitData(newStockUnit);
     }
 
-    static async edit(
+    static async editStockUnit(
         stockUnitId: string,
         stockUnit: IEditStockUnitRequest,
     ): Promise<IStockUnitData> {
-        const { editStockUnit } = tenantDbServices.catalogue;
-        const editedStockUnit: TStockUnitDoc = await editStockUnit(stockUnitId, stockUnit);
-        return StockUnitService.getHash(editedStockUnit);
+        const catalogueDbService = tenantDbServices.catalogue;
+        const editedStockUnit: TStockUnitDoc = await catalogueDbService.editStockUnit(
+            stockUnitId,
+            stockUnit,
+        );
+        return StockUnitService.convertToStockUnitData(editedStockUnit);
     }
 
-    static async delete(stockUnitId: string): Promise<void> {
-        const { deleteStockUnit } = tenantDbServices.catalogue;
-        await deleteStockUnit(stockUnitId);
+    static async deleteStockUnit(stockUnitId: string): Promise<void> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        await catalogueDbService.deleteStockUnit(stockUnitId);
     }
 
-    private static getHash(stockUnit: TStockUnitDoc) {
+    private static convertToStockUnitData(stockUnit: TStockUnitDoc) {
         if (stockUnit) {
             const { id, name, isDefault } = stockUnit;
-            const stockHash: IStockUnitData = { id, name, isDefault };
-            return stockHash;
+            const stockData: IStockUnitData = { id, name, isDefault };
+            return stockData;
         }
         return null;
     }

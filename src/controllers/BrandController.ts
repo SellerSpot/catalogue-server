@@ -1,21 +1,21 @@
-import { RequestHandler } from 'express';
 import {
+    ERROR_CODE,
+    IBrandData,
+    ICommonResourcePathParam,
     ICreateBrandRequest,
     ICreateBrandResponse,
-    IGetAllBrandResponse,
     IEditBrandRequest,
     IEditBrandResponse,
+    IGetAllBrandResponse,
     IGetBrandResponse,
-    IBrandData,
     STATUS_CODE,
-    ERROR_CODE,
-    ICommonResourcePathParam,
 } from '@sellerspot/universal-types';
+import { RequestHandler } from 'express';
 import { BrandService } from 'services/services';
 
 export class BrandController {
     static createBrand: RequestHandler = async (req, res) => {
-        const newBrand: IBrandData = await BrandService.create(<ICreateBrandRequest>req.body);
+        const newBrand: IBrandData = await BrandService.createBrand(<ICreateBrandRequest>req.body);
         res.status(STATUS_CODE.CREATED).send(<ICreateBrandResponse>{
             status: true,
             data: newBrand,
@@ -24,7 +24,7 @@ export class BrandController {
 
     static getBrand: RequestHandler = async (req, res) => {
         const params = (req.params as unknown) as ICommonResourcePathParam;
-        const brand: IBrandData = await BrandService.show(params.id);
+        const brand: IBrandData = await BrandService.getBrand(params.id);
         if (!brand) {
             return res.status(STATUS_CODE.NOT_FOUND).send(<IGetBrandResponse>{
                 status: false,
@@ -40,7 +40,7 @@ export class BrandController {
     };
 
     static getAllBrand: RequestHandler = async (req, res) => {
-        const brandList: IBrandData[] = await BrandService.list();
+        const brandList: IBrandData[] = await BrandService.getAllBrand();
         res.status(STATUS_CODE.OK).send(<IGetAllBrandResponse>{
             status: true,
             data: brandList,
@@ -48,7 +48,7 @@ export class BrandController {
     };
 
     static editBrand: RequestHandler = async (req, res) => {
-        const editedBrand: IBrandData = await BrandService.edit(
+        const editedBrand: IBrandData = await BrandService.editBrand(
             req.params.id,
             <IEditBrandRequest>req.body,
         );
@@ -67,7 +67,7 @@ export class BrandController {
     };
 
     static deleteBrand: RequestHandler = async (req, res) => {
-        await BrandService.delete(req.params.id);
+        await BrandService.deleteBrand(req.params.id);
         res.status(STATUS_CODE.NO_CONTENT).send();
     };
 }
