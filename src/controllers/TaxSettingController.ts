@@ -5,12 +5,15 @@ import {
     ICreateTaxGroupResponse,
     IEditTaxBracketRequest,
     IEditTaxBracketResponse,
+    IEditTaxGroupRequest,
     IGetAllTaxBracketResponse,
+    IGetAllTaxGroupResponse,
     IGetTaxBracketResponse,
+    IGetTaxGroupResponse,
     STATUS_CODE,
 } from '@sellerspot/universal-types';
 import { RequestHandler } from 'express';
-import { TaxBracketService } from 'services/TaxSettingService';
+import { TaxBracketService, TaxGroupService } from 'services/TaxSettingService';
 
 export class TaxBracketController {
     static getAllTaxBracket: RequestHandler = async (__, res, _) => {
@@ -56,6 +59,7 @@ export class TaxBracketController {
                 status: false,
                 error: {
                     code: ERROR_CODE.NOT_FOUND,
+                    message: 'Tax Bracket not found',
                 },
             });
         }
@@ -66,16 +70,69 @@ export class TaxBracketController {
     };
 
     static deleteTaxBracket: RequestHandler = async (req, res, _) => {
-        const params = (req.params.id as unknown) as ICommonResourcePathParam;
+        const params = (req.params as unknown) as ICommonResourcePathParam;
         await TaxBracketService.deleteTaxBracket(params.id);
         res.sendStatus(STATUS_CODE.NO_CONTENT);
     };
 }
 
 export class TaxGroupController {
-    // static createTaxGroup: RequestHandler = async (req, res, _) => {
-    //     const newTaxGroup = req.body;
-    //     const taxGroup = await TaxBracketService.createGroup(newTaxGroup);
-    //     res.json(<ICreateTaxGroupResponse>{ status: true, data: taxGroup });
-    // };
+    static getAllTaxGroup: RequestHandler = async (__, res, _) => {
+        const taxGroups = await TaxGroupService.getAllTaxGroups();
+        res.status(STATUS_CODE.OK).send(<IGetAllTaxGroupResponse>{
+            status: true,
+            data: taxGroups,
+        });
+    };
+
+    static getTaxGroup: RequestHandler = async (req, res, _) => {
+        const params = (req.params as unknown) as ICommonResourcePathParam;
+        const taxGroup = await TaxGroupService.getTaxGroup(params.id);
+        if (!taxGroup) {
+            return res.status(STATUS_CODE.NOT_FOUND).send(<IGetTaxBracketResponse>{
+                status: false,
+                error: {
+                    code: ERROR_CODE.NOT_FOUND,
+                    message: 'Tax Group not found',
+                },
+            });
+        }
+        res.status(STATUS_CODE.OK).send(<IGetTaxGroupResponse>{
+            status: true,
+            data: taxGroup,
+        });
+    };
+
+    static createTaxGroup: RequestHandler = async (req, res, _) => {
+        const newTaxBracket = req.body;
+        const createdTaxgroup = await TaxGroupService.createTaxGroup(newTaxBracket);
+        res.status(STATUS_CODE.CREATED).send(<ICreateTaxBracketResponse>{
+            status: true,
+            data: createdTaxgroup,
+        });
+    };
+
+    static editTaxGroup: RequestHandler = async (req, res, _) => {
+        const newTaxGroup: IEditTaxGroupRequest = req.body;
+        const params = (req.params as unknown) as ICommonResourcePathParam;
+        const updatedTaxBracket = await TaxGroupService.editTaxGroup(newTaxGroup, params.id);
+        if (!updatedTaxBracket) {
+            return res.status(STATUS_CODE.NOT_FOUND).send(<IEditTaxBracketResponse>{
+                status: false,
+                error: {
+                    code: ERROR_CODE.NOT_FOUND,
+                },
+            });
+        }
+        res.status(STATUS_CODE.OK).send(<IEditTaxBracketResponse>{
+            status: true,
+            data: updatedTaxBracket,
+        });
+    };
+
+    static deleteTaxGroup: RequestHandler = async (req, res, _) => {
+        const params = (req.params as unknown) as ICommonResourcePathParam;
+        await TaxGroupService.deleteTaxGroup(params.id);
+        res.sendStatus(STATUS_CODE.NO_CONTENT);
+    };
 }
