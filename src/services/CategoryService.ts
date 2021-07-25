@@ -3,7 +3,7 @@ import {
     ICreateCategoryRequest,
     ICategoryData,
     IEditCategoryPositionRequest,
-    IEditCategorySiblingOrderRequest,
+    IEditCategoryChildrenOrderRequest,
     IEditCategoryRequest,
 } from '@sellerspot/universal-types';
 import { isEmpty } from 'lodash';
@@ -95,19 +95,22 @@ export class CategoryService {
         categoryMeta: IEditCategoryRequest,
     ): Promise<ICategoryData> {
         const catalogueDbService = tenantDbServices.catalogue;
-        const { id, title } = await catalogueDbService.editCategoryContent(
+        const { id, title, children } = await catalogueDbService.editCategoryContent(
             categoryId,
             categoryMeta,
         );
-        return { id, title };
+        const childrenData = (<ICategoryDoc[]>children).map((child) => {
+            return { id: <string>child.id, title: child.title };
+        });
+        return { id, title, children: childrenData };
     }
 
-    static async editCategorySiblingOrder(
+    static async editCategoryChildrenOrder(
         categoryId: string,
-        siblingArr: IEditCategorySiblingOrderRequest,
+        siblingArr: IEditCategoryChildrenOrderRequest,
     ): Promise<ICategoryData> {
         const catalogueDbService = tenantDbServices.catalogue;
-        const { id, title, children } = await catalogueDbService.editCategorySiblingOrder(
+        const { id, title, children } = await catalogueDbService.editCategoryChildrenOrder(
             categoryId,
             siblingArr,
         );
