@@ -6,11 +6,15 @@ import {
     IGetAllCategoryResponse,
     IGetCategoryResponse,
     IEditCategoryPositionResponse,
-    IEditCategorySiblingOrderResponse,
+    IEditCategoryChildrenOrderResponse,
     IEditCategoryResponse,
     STATUS_CODE,
+    IEditCategoryChildrenOrderRequest,
+    ICommonResourcePathParam,
+    IEditCategoryRequest,
 } from '@sellerspot/universal-types';
 import { CategoryService } from 'services/services';
+import { IEditChildrenOrderPathParam } from '../../.yalc/@sellerspot/universal-types/dist/catalogue/category/routes';
 
 export class CategoryController {
     static createCategory: RequestHandler = async (req, res) => {
@@ -26,7 +30,8 @@ export class CategoryController {
     };
 
     static getCategory: RequestHandler = async (req, res) => {
-        const category: ICategoryData = await CategoryService.getCategory(req.params.id);
+        const params = (req.params as unknown) as ICommonResourcePathParam;
+        const category: ICategoryData = await CategoryService.getCategory(params.id);
         res.status(STATUS_CODE.OK).json(<IGetCategoryResponse>{ status: true, data: category });
     };
 
@@ -49,22 +54,23 @@ export class CategoryController {
         });
     };
 
-    static editCategorySiblingOrder: RequestHandler = async (req, res) => {
-        const category: ICategoryData = await CategoryService.editCategorySiblingOrder(
-            req.params.id,
-            req.body,
+    static editCategoryChildrenOrder: RequestHandler = async (req, res) => {
+        const params = (req.params as unknown) as IEditChildrenOrderPathParam;
+        const body: IEditCategoryChildrenOrderRequest = req.body;
+        const category: ICategoryData = await CategoryService.editCategoryChildrenOrder(
+            params.parentid,
+            body,
         );
-        res.status(STATUS_CODE.OK).json(<IEditCategorySiblingOrderResponse>{
+        res.status(STATUS_CODE.OK).json(<IEditCategoryChildrenOrderResponse>{
             status: true,
             data: category,
         });
     };
 
     static editCategory: RequestHandler = async (req, res) => {
-        const category: ICategoryData = await CategoryService.editCategoryContent(
-            req.params.id,
-            req.body,
-        );
+        const params = (req.params as unknown) as ICommonResourcePathParam;
+        const body: IEditCategoryRequest = req.body;
+        const category: ICategoryData = await CategoryService.editCategoryContent(params.id, body);
         res.status(STATUS_CODE.OK).json(<IEditCategoryResponse>{
             status: true,
             data: category,
@@ -72,7 +78,8 @@ export class CategoryController {
     };
 
     static deleteCategory: RequestHandler = async (req, res) => {
-        await CategoryService.deleteCategory(req.params.id);
+        const params = (req.params as unknown) as ICommonResourcePathParam;
+        await CategoryService.deleteCategory(params.id);
         res.status(STATUS_CODE.NO_CONTENT).send();
     };
 }

@@ -1,10 +1,15 @@
 import { Router } from 'express';
-import { middlewares } from '@sellerspot/universal-functions';
+import { middlewares, RegexUtil } from '@sellerspot/universal-functions';
 import { ROUTES } from '@sellerspot/universal-types';
 import { CategorySchema, CommonSchema } from 'schemas/schemas';
 import { CategoryController } from 'controllers/controllers';
+import Joi from 'joi';
 
 const router = Router();
+
+const editChildrenOrderPathParamSchema = Joi.object({
+    parentid: Joi.string().regex(RegexUtil.OBJECT_ID).required(),
+});
 
 router.get(
     ROUTES.CATALOGUE.CATEGORY.GET_ALL,
@@ -37,13 +42,13 @@ router.put(
 );
 
 router.put(
-    ROUTES.CATALOGUE.CATEGORY.EDIT_SIBLING_ORDER,
+    ROUTES.CATALOGUE.CATEGORY.EDIT_CHILDREN_ORDER,
     middlewares.validateSchema({
-        pathParamSchema: CommonSchema.resourcePathParam,
-        bodySchema: CategorySchema.editSiblingOrder,
+        pathParamSchema: editChildrenOrderPathParamSchema,
+        bodySchema: CategorySchema.editChildrenOrder,
     }),
     middlewares.auth,
-    CategoryController.editCategorySiblingOrder,
+    CategoryController.editCategoryChildrenOrder,
 );
 
 router.put(
