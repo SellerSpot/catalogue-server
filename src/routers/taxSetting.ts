@@ -1,12 +1,36 @@
 import { ROUTES } from '@sellerspot/universal-types';
 import { Router } from 'express';
-import { TaxBracketController, TaxGroupController } from 'controllers/controllers';
+import {
+    TaxBracketController,
+    TaxGroupController,
+    TaxSettingController,
+} from 'controllers/controllers';
 import { middlewares } from '@sellerspot/universal-functions';
 import { CommonSchema, TaxSettingSchema } from 'schemas/schemas';
+import { TaxBracketService } from 'services/TaxSettingService';
 
 const router = Router();
 
+// tax settings
+router.get(
+    ROUTES.CATALOGUE.TAX_BRACKET.SEARCH_TAXSETTING,
+    middlewares.validateSchema({
+        queryParamSchema: CommonSchema.resourceQueryParam,
+    }),
+    middlewares.auth,
+    TaxSettingController.searchTaxSetting,
+);
+
 // tax groups
+router.get(
+    ROUTES.CATALOGUE.TAX_BRACKET.SEARCH_TAXGROUP,
+    middlewares.validateSchema({
+        queryParamSchema: CommonSchema.resourceQueryParam,
+    }),
+    middlewares.auth,
+    TaxGroupController.searchTaxGroup,
+);
+
 router.get(
     ROUTES.CATALOGUE.TAX_BRACKET.GET_ALL_GROUP,
     middlewares.auth,
@@ -49,6 +73,15 @@ router.delete(
 );
 
 // tax bracket
+router.get(
+    ROUTES.CATALOGUE.TAX_BRACKET.SEARCH_TAXBRACKET,
+    middlewares.validateSchema({
+        queryParamSchema: CommonSchema.resourceQueryParam,
+    }),
+    middlewares.auth,
+    TaxBracketController.searchTaxBracket,
+);
+
 router.get(
     ROUTES.CATALOGUE.TAX_BRACKET.GET_ALL_BRACKET,
     middlewares.auth,
