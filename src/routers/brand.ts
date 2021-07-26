@@ -9,6 +9,13 @@ const router = Router();
 router.get(ROUTES.CATALOGUE.BRAND.GET_ALL, middlewares.auth, BrandController.getAllBrand);
 
 router.get(
+    ROUTES.CATALOGUE.BRAND.SEARCH,
+    middlewares.validateSchema({ queryParamSchema: CommonSchema.resourceQueryParam }),
+    middlewares.auth,
+    BrandController.searchBrand,
+);
+
+router.get(
     ROUTES.CATALOGUE.BRAND.GET,
     middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,

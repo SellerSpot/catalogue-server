@@ -13,6 +13,13 @@ router.get(
 );
 
 router.get(
+    ROUTES.CATALOGUE.STOCK_UNIT.SEARCH,
+    middlewares.validateSchema({ queryParamSchema: CommonSchema.resourceQueryParam }),
+    middlewares.auth,
+    StockUnitController.searchStockUnit,
+);
+
+router.get(
     ROUTES.CATALOGUE.STOCK_UNIT.GET,
     middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,

@@ -5,4 +5,8 @@ export class CommonSchema {
     static resourcePathParam = Joi.object({
         id: Joi.string().regex(RegexUtil.OBJECT_ID).required(),
     });
+
+    static resourceQueryParam = Joi.object({
+        query: Joi.string().required(),
+    });
 }

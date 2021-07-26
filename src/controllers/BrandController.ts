@@ -8,6 +8,8 @@ import {
     IEditBrandResponse,
     IGetAllBrandResponse,
     IGetBrandResponse,
+    ISearchBrandResponse,
+    ISearchResourceQueryParam,
     STATUS_CODE,
 } from '@sellerspot/universal-types';
 import { RequestHandler } from 'express';
@@ -39,11 +41,20 @@ export class BrandController {
         });
     };
 
+    static searchBrand: RequestHandler = async (req, res) => {
+        const params = (req.query as unknown) as ISearchResourceQueryParam;
+        const matchedBrands: IBrandData[] = await BrandService.searchBrand(params.query);
+        res.status(STATUS_CODE.OK).send(<ISearchBrandResponse>{
+            status: true,
+            data: matchedBrands,
+        });
+    };
+
     static getAllBrand: RequestHandler = async (req, res) => {
-        const brandList: IBrandData[] = await BrandService.getAllBrand();
+        const allbrands: IBrandData[] = await BrandService.getAllBrand();
         res.status(STATUS_CODE.OK).send(<IGetAllBrandResponse>{
             status: true,
-            data: brandList,
+            data: allbrands,
         });
     };
 
