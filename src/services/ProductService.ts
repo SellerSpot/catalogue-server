@@ -1,12 +1,17 @@
-import { IProductData, IProductRequest, IStockUnitData } from '@sellerspot/universal-types';
+import {
+    ICreateProductRequest,
+    IEditProductRequest,
+    IProductData,
+} from '@sellerspot/universal-types';
 import { tenantDbModels, tenantDbServices } from '@sellerspot/database-models';
-import { IStockUnitDoc } from '../../.yalc/@sellerspot/database-models/dist/models/tenantDb/catalogueModels';
 
 type ICategoryDoc = tenantDbModels.catalogueModels.ICategoryDoc;
 type IProductDoc = tenantDbModels.catalogueModels.IProductDoc;
 type IBrandDoc = tenantDbModels.catalogueModels.IBrandDoc;
+type IStockUnitDoc = tenantDbModels.catalogueModels.IStockUnitDoc;
+
 export class ProductService {
-    static async createProduct(newProduct: IProductRequest): Promise<IProductData> {
+    static async createProduct(newProduct: ICreateProductRequest): Promise<IProductData> {
         const catalogueDbService = tenantDbServices.catalogue;
         const product: IProductDoc = await catalogueDbService.createProduct(newProduct);
         return ProductService.convertToProductData(product);
@@ -14,7 +19,7 @@ export class ProductService {
 
     static async editProduct(
         productId: string,
-        editProductProps: Partial<IProductRequest>,
+        editProductProps: IEditProductRequest,
     ): Promise<IProductData> {
         const catalogueDbService = tenantDbServices.catalogue;
         const product: IProductDoc = await catalogueDbService.editProduct(
@@ -60,10 +65,11 @@ export class ProductService {
                 };
             }
             if (stockUnit) {
-                const { name, id: stockUnitId } = <IStockUnitDoc>stockUnit;
+                const { name, id: stockUnitId, unit } = <IStockUnitDoc>stockUnit;
                 productData.stockUnit = {
                     id: stockUnitId,
                     name,
+                    unit,
                 };
             }
             return productData;
