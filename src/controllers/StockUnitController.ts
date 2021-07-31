@@ -9,6 +9,9 @@ import {
     IGetStockUnitResponse,
     ICreateStockUnitRequest,
     ICreateStockUnitResponse,
+    ISearchResourceQueryParam,
+    IStockUnitData,
+    ISearchStockUnitResponse,
 } from '@sellerspot/universal-types';
 import { StockUnitService } from 'services/services';
 
@@ -36,6 +39,17 @@ export class StockUnitController {
         res.status(STATUS_CODE.OK).send(<IGetStockUnitResponse>{
             status: true,
             data: brand,
+        });
+    };
+
+    static searchStockUnit: RequestHandler = async (req, res) => {
+        const params = (req.query as unknown) as ISearchResourceQueryParam;
+        const matchedStockUnits: IStockUnitData[] = await StockUnitService.searchStockUnit(
+            params.query,
+        );
+        res.status(STATUS_CODE.OK).send(<ISearchStockUnitResponse>{
+            status: true,
+            data: matchedStockUnits,
         });
     };
 

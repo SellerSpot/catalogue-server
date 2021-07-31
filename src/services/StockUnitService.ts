@@ -29,6 +29,12 @@ export class StockUnitService {
         return StockUnitService.convertToStockUnitData(newStockUnit);
     }
 
+    static async searchStockUnit(query: string): Promise<IStockUnitData[]> {
+        const catalogueDbService = tenantDbServices.catalogue;
+        const matchedStockUnits: TStockUnitDoc[] = await catalogueDbService.searchStockUnit(query);
+        return matchedStockUnits.map((brand) => StockUnitService.convertToStockUnitData(brand));
+    }
+
     static async editStockUnit(
         stockUnitId: string,
         stockUnit: IEditStockUnitRequest,
@@ -48,8 +54,8 @@ export class StockUnitService {
 
     private static convertToStockUnitData(stockUnit: TStockUnitDoc) {
         if (stockUnit) {
-            const { id, name, isDefault } = stockUnit;
-            const stockData: IStockUnitData = { id, name, isDefault };
+            const { id, name, unit, isDefault } = stockUnit;
+            const stockData: IStockUnitData = { id, name, unit, isDefault };
             return stockData;
         }
         return null;
