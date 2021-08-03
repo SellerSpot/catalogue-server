@@ -9,14 +9,14 @@ type TStockUnitDoc = tenantDbModels.catalogueModels.IStockUnitDoc;
 
 export class StockUnitService {
     static async getStockUnit(stockUnitId: string): Promise<IStockUnitData> {
-        const catalogueService = tenantDbServices.catalogue;
-        const stockUnit: TStockUnitDoc = await catalogueService.getStockUnit(stockUnitId);
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        const stockUnit: TStockUnitDoc = await StockUnitDbService.getStockUnit(stockUnitId);
         return StockUnitService.convertToStockUnitData(stockUnit);
     }
 
     static async getAllStockUnit(): Promise<IStockUnitData[]> {
-        const catalogueService = tenantDbServices.catalogue;
-        const stockUnits: TStockUnitDoc[] = await catalogueService.getAllStockUnit();
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        const stockUnits: TStockUnitDoc[] = await StockUnitDbService.getAllStockUnit();
         const allStockUnits: IStockUnitData[] = stockUnits.map((stockUnit) =>
             StockUnitService.convertToStockUnitData(stockUnit),
         );
@@ -24,14 +24,14 @@ export class StockUnitService {
     }
 
     static async createStockUnit(stockUnit: ICreateStockUnitRequest): Promise<IStockUnitData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const newStockUnit: TStockUnitDoc = await catalogueDbService.createStockUnit(stockUnit);
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        const newStockUnit: TStockUnitDoc = await StockUnitDbService.createStockUnit(stockUnit);
         return StockUnitService.convertToStockUnitData(newStockUnit);
     }
 
     static async searchStockUnit(query: string): Promise<IStockUnitData[]> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const matchedStockUnits: TStockUnitDoc[] = await catalogueDbService.searchStockUnit(query);
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        const matchedStockUnits: TStockUnitDoc[] = await StockUnitDbService.searchStockUnit(query);
         return matchedStockUnits.map((brand) => StockUnitService.convertToStockUnitData(brand));
     }
 
@@ -39,8 +39,8 @@ export class StockUnitService {
         stockUnitId: string,
         stockUnit: IEditStockUnitRequest,
     ): Promise<IStockUnitData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const editedStockUnit: TStockUnitDoc = await catalogueDbService.editStockUnit(
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        const editedStockUnit: TStockUnitDoc = await StockUnitDbService.editStockUnit(
             stockUnitId,
             stockUnit,
         );
@@ -48,8 +48,8 @@ export class StockUnitService {
     }
 
     static async deleteStockUnit(stockUnitId: string): Promise<void> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        await catalogueDbService.deleteStockUnit(stockUnitId);
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        await StockUnitDbService.deleteStockUnit(stockUnitId);
     }
 
     private static convertToStockUnitData(stockUnit: TStockUnitDoc) {
