@@ -14,7 +14,7 @@ import {
     IEditCategoryRequest,
 } from '@sellerspot/universal-types';
 import { CategoryService } from 'services/services';
-import { IEditChildrenOrderPathParam } from '../../.yalc/@sellerspot/universal-types/dist/catalogue/category/routes';
+import { IEditChildrenOrderPathParam } from '@sellerspot/universal-types';
 
 export class CategoryController {
     static createCategory: RequestHandler = async (req, res) => {
@@ -58,7 +58,7 @@ export class CategoryController {
         const params = (req.params as unknown) as IEditChildrenOrderPathParam;
         const body: IEditCategoryChildrenOrderRequest = req.body;
         const category: ICategoryData = await CategoryService.editCategoryChildrenOrder(
-            params.parentid,
+            params.parentId,
             body,
         );
         res.status(STATUS_CODE.OK).json(<IEditCategoryChildrenOrderResponse>{
