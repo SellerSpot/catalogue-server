@@ -24,6 +24,13 @@ router.put(
 );
 
 router.get(
+    ROUTES.CATALOGUE.PRODUCT.SEARCH,
+    middlewares.validateSchema({ queryParamSchema: CommonSchema.resourceQueryParam }),
+    middlewares.auth,
+    ProductController.searchProduct,
+);
+
+router.get(
     ROUTES.CATALOGUE.PRODUCT.GET,
     middlewares.validateSchema({ pathParamSchema: CommonSchema.resourcePathParam }),
     middlewares.auth,
