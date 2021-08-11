@@ -43,7 +43,7 @@ export class BrandController {
 
     static searchBrand: RequestHandler = async (req, res) => {
         const params = (req.query as unknown) as ISearchResourceQueryParam;
-        const matchedBrands: IBrandData[] = await BrandService.searchBrand(params.query);
+        const matchedBrands = await BrandService.searchBrand(params.query);
         res.status(STATUS_CODE.OK).send(<ISearchBrandResponse>{
             status: true,
             data: matchedBrands,
@@ -51,7 +51,7 @@ export class BrandController {
     };
 
     static getAllBrand: RequestHandler = async (req, res) => {
-        const allbrands: IBrandData[] = await BrandService.getAllBrand();
+        const allbrands = await BrandService.getAllBrand();
         res.status(STATUS_CODE.OK).send(<IGetAllBrandResponse>{
             status: true,
             data: allbrands,
