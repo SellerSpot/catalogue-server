@@ -5,6 +5,8 @@ import {
     IEditProductResponse,
     IGetAllProductResponse,
     IGetProductResponse,
+    ISearchProductResponse,
+    ISearchResourceQueryParam,
     STATUS_CODE,
 } from '@sellerspot/universal-types';
 import { RequestHandler } from 'express';
@@ -33,10 +35,19 @@ export class ProductController {
     };
 
     static getAllProduct: RequestHandler = async (req, res, _) => {
-        const productList = await ProductService.getAllProduct();
+        const allProducts = await ProductService.getAllProduct();
         res.status(STATUS_CODE.OK).json(<IGetAllProductResponse>{
             status: true,
-            data: productList,
+            data: allProducts,
+        });
+    };
+
+    static searchProduct: RequestHandler = async (req, res) => {
+        const params = (req.query as unknown) as ISearchResourceQueryParam;
+        const matchedProducts = await ProductService.searchProduct(params.query);
+        res.status(STATUS_CODE.OK).send(<ISearchProductResponse>{
+            status: true,
+            data: matchedProducts,
         });
     };
 

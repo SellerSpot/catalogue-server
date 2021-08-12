@@ -37,6 +37,7 @@ export class CategoryController {
 
     static getAllCategories: RequestHandler = async (_, res) => {
         const allCategories: ICategoryData[] = await CategoryService.getAllCategory();
+
         res.status(STATUS_CODE.OK).json(<IGetAllCategoryResponse>{
             status: true,
             data: allCategories,

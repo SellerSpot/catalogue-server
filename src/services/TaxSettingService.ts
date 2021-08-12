@@ -1,4 +1,4 @@
-import { tenantDbModels, tenantDbServices } from '@sellerspot/database-models';
+import { tenantDbServices } from '@sellerspot/database-models';
 import {
     ICreateTaxBracketRequest,
     ICreateTaxGroupRequest,
@@ -7,145 +7,96 @@ import {
     ITaxGroupData,
     ITaxSettingData,
 } from '@sellerspot/universal-types';
-import { isEmpty, orderBy, pick } from 'lodash';
-
-type TTaxSettingDoc = tenantDbModels.catalogueModels.ITaxSettingDoc;
+import { orderBy } from 'lodash';
 
 export class TaxSettingService {
-    static convertToTaxSettingData = (
-        taxSettingDoc: TTaxSettingDoc,
-    ): ITaxBracketData | ITaxGroupData => {
-        if (!taxSettingDoc) return null;
-        const { isGroup } = taxSettingDoc;
-        if (isGroup) {
-            return TaxGroupService.convertToTaxGroupData(taxSettingDoc);
-        } else {
-            return TaxBracketService.convertToBracketData(taxSettingDoc);
-        }
-    };
-
     static async searchTaxSetting(query: string): Promise<ITaxSettingData[]> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        let taxSettingDocs = await catalogueDbService.searchTaxSetting(query, 'all');
+        const { TaxSettingDbService } = tenantDbServices.catalogue;
+        let matchedTaxSettings = await TaxSettingDbService.searchTaxSetting(query, 'all');
         // bringing the groups first
-        taxSettingDocs = orderBy(taxSettingDocs, ['isGroup'], ['desc']);
-        return taxSettingDocs.map((taxSettingDoc) =>
-            TaxSettingService.convertToTaxSettingData(taxSettingDoc),
-        );
+        matchedTaxSettings = orderBy(matchedTaxSettings, ['isGroup'], ['desc']);
+        return matchedTaxSettings;
     }
 }
 
 export class TaxBracketService {
-    static convertToBracketData(taxBracket: TTaxSettingDoc): ITaxBracketData {
-        if (!taxBracket) return null;
-        const { id, name, rate } = taxBracket;
-        return {
-            id,
-            name,
-            rate,
-        };
-    }
-
     static async createTaxBracket(
         bracketProps: ICreateTaxBracketRequest,
     ): Promise<ITaxBracketData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const taxBracketDoc = await catalogueDbService.createTaxBracket(bracketProps);
-        return TaxBracketService.convertToBracketData(taxBracketDoc);
+        const { TaxBracketDbService } = tenantDbServices.catalogue;
+        const newTaxBracket = await TaxBracketDbService.createTaxBracket(bracketProps);
+        return newTaxBracket;
     }
 
     static async getAllTaxBrackets(): Promise<ITaxBracketData[]> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const taxBracketDocs = await catalogueDbService.getAllTaxBracket();
-        return taxBracketDocs.map((bracket) => TaxBracketService.convertToBracketData(bracket));
+        const { TaxBracketDbService } = tenantDbServices.catalogue;
+        const allTaxBrackets = await TaxBracketDbService.getAllTaxBracket();
+        return allTaxBrackets;
     }
 
     static async getTaxBracket(bracketId: string): Promise<ITaxBracketData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const taxBracketDoc = await catalogueDbService.getTaxBracket(bracketId);
-        return TaxBracketService.convertToBracketData(taxBracketDoc);
+        const { TaxBracketDbService } = tenantDbServices.catalogue;
+        const taxBracket = await TaxBracketDbService.getTaxBracket(bracketId);
+        return taxBracket;
     }
 
     static async searchTaxBracket(query: string): Promise<ITaxBracketData[]> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const taxBracketDocs = await catalogueDbService.searchTaxSetting(query, 'bracket');
-        return taxBracketDocs.map((taxBracketDoc) =>
-            TaxBracketService.convertToBracketData(taxBracketDoc),
-        );
+        const { TaxSettingDbService } = tenantDbServices.catalogue;
+        const matchedTaxBracket = await TaxSettingDbService.searchTaxSetting(query, 'bracket');
+        return matchedTaxBracket;
     }
 
     static async editTaxBracket(
         bracketData: IEditTaxBracketRequest,
         bracketId: string,
     ): Promise<ITaxBracketData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const taxBracketDoc = await catalogueDbService.editTaxBracket(bracketData, bracketId);
-        return TaxBracketService.convertToBracketData(taxBracketDoc);
+        const { TaxBracketDbService } = tenantDbServices.catalogue;
+        const updatedTaxBracket = await TaxBracketDbService.editTaxBracket(bracketData, bracketId);
+        return updatedTaxBracket;
     }
 
     static async deleteTaxBracket(bracketId: string): Promise<void> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        await catalogueDbService.deleteTaxBracket(bracketId);
+        const { TaxBracketDbService } = tenantDbServices.catalogue;
+        await TaxBracketDbService.deleteTaxBracket(bracketId);
     }
 }
 
 export class TaxGroupService {
-    static convertToTaxGroupData(taxGroupDoc: TTaxSettingDoc): ITaxGroupData {
-        if (!taxGroupDoc) return null;
-        const { id, group, name } = taxGroupDoc;
-        let groupRate = 0;
-        const bracket = (<TTaxSettingDoc[]>group).map((tax) => {
-            const currBracketData = TaxBracketService.convertToBracketData(tax);
-            const { rate } = currBracketData;
-            groupRate = groupRate + rate;
-            return currBracketData;
-        });
-        const groupData: ITaxGroupData = {
-            id,
-            name,
-            rate: groupRate,
-            bracket,
-        };
-        return groupData;
-    }
-
     static async getAllTaxGroups(): Promise<ITaxGroupData[]> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const taxGroupDocs = await catalogueDbService.getAllTaxGroup();
-        return taxGroupDocs.map((taxGroup) => TaxGroupService.convertToTaxGroupData(taxGroup));
+        const { TaxGroupDbService } = tenantDbServices.catalogue;
+        const taxGroupDocs = await TaxGroupDbService.getAllTaxGroup();
+        return taxGroupDocs;
     }
 
     static getTaxGroup = async (taxGroupId: string): Promise<ITaxGroupData> => {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const taxGroupDoc = await catalogueDbService.getTaxGroup(taxGroupId);
-        return TaxGroupService.convertToTaxGroupData(taxGroupDoc);
+        const { TaxGroupDbService } = tenantDbServices.catalogue;
+        const taxGroupDoc = await TaxGroupDbService.getTaxGroup(taxGroupId);
+        return taxGroupDoc;
     };
 
     static async searchTaxGroup(query: string): Promise<ITaxGroupData[]> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const taxGroupDocs = await catalogueDbService.searchTaxSetting(query, 'group');
-        return taxGroupDocs.map((taxGroupDoc) =>
-            TaxGroupService.convertToTaxGroupData(taxGroupDoc),
-        );
+        const { TaxSettingDbService } = tenantDbServices.catalogue;
+        const matchedTaxGroups = await TaxSettingDbService.searchTaxSetting(query, 'group');
+        return matchedTaxGroups as ITaxGroupData[];
     }
 
     static async createTaxGroup(taxGroupData: ICreateTaxGroupRequest): Promise<ITaxGroupData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const taxGroupDoc = await catalogueDbService.createTaxGroup(taxGroupData);
-        return TaxGroupService.convertToTaxGroupData(taxGroupDoc);
+        const { TaxGroupDbService } = tenantDbServices.catalogue;
+        const newTaxGroup = await TaxGroupDbService.createTaxGroup(taxGroupData);
+        return newTaxGroup;
     }
 
     static async editTaxGroup(
         taxGroupData: ICreateTaxGroupRequest,
         taxGroupId: string,
     ): Promise<ITaxGroupData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const taxGroupDoc = await catalogueDbService.editTaxGroup(taxGroupData, taxGroupId);
-        return TaxGroupService.convertToTaxGroupData(taxGroupDoc);
+        const { TaxGroupDbService } = tenantDbServices.catalogue;
+        const updatedTaxGroup = await TaxGroupDbService.editTaxGroup(taxGroupData, taxGroupId);
+        return updatedTaxGroup;
     }
 
     static async deleteTaxGroup(taxGroupId: string): Promise<void> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        await catalogueDbService.deleteTaxGroup(taxGroupId);
+        const { TaxGroupDbService } = tenantDbServices.catalogue;
+        await TaxGroupDbService.deleteTaxGroup(taxGroupId);
     }
 }
