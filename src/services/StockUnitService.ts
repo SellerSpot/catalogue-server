@@ -1,63 +1,49 @@
+import { tenantDbServices } from '@sellerspot/database-models';
 import {
-    IStockUnitData,
-    IEditStockUnitRequest,
     ICreateStockUnitRequest,
+    IEditStockUnitRequest,
+    IStockUnitData,
 } from '@sellerspot/universal-types';
-import { tenantDbServices, tenantDbModels } from '@sellerspot/database-models';
-
-type TStockUnitDoc = tenantDbModels.catalogueModels.IStockUnitDoc;
 
 export class StockUnitService {
     static async getStockUnit(stockUnitId: string): Promise<IStockUnitData> {
-        const catalogueService = tenantDbServices.catalogue;
-        const stockUnit: TStockUnitDoc = await catalogueService.getStockUnit(stockUnitId);
-        return StockUnitService.convertToStockUnitData(stockUnit);
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        const stockUnit: IStockUnitData = await StockUnitDbService.getStockUnit(stockUnitId);
+        return stockUnit;
     }
 
     static async getAllStockUnit(): Promise<IStockUnitData[]> {
-        const catalogueService = tenantDbServices.catalogue;
-        const stockUnits: TStockUnitDoc[] = await catalogueService.getAllStockUnit();
-        const allStockUnits: IStockUnitData[] = stockUnits.map((stockUnit) =>
-            StockUnitService.convertToStockUnitData(stockUnit),
-        );
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        const allStockUnits: IStockUnitData[] = await StockUnitDbService.getAllStockUnit();
         return allStockUnits;
     }
 
     static async createStockUnit(stockUnit: ICreateStockUnitRequest): Promise<IStockUnitData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const newStockUnit: TStockUnitDoc = await catalogueDbService.createStockUnit(stockUnit);
-        return StockUnitService.convertToStockUnitData(newStockUnit);
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        const newStockUnit: IStockUnitData = await StockUnitDbService.createStockUnit(stockUnit);
+        return newStockUnit;
     }
 
     static async searchStockUnit(query: string): Promise<IStockUnitData[]> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const matchedStockUnits: TStockUnitDoc[] = await catalogueDbService.searchStockUnit(query);
-        return matchedStockUnits.map((brand) => StockUnitService.convertToStockUnitData(brand));
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        const matchedStockUnits: IStockUnitData[] = await StockUnitDbService.searchStockUnit(query);
+        return matchedStockUnits;
     }
 
     static async editStockUnit(
         stockUnitId: string,
         stockUnit: IEditStockUnitRequest,
     ): Promise<IStockUnitData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const editedStockUnit: TStockUnitDoc = await catalogueDbService.editStockUnit(
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        const editedStockUnit: IStockUnitData = await StockUnitDbService.editStockUnit(
             stockUnitId,
             stockUnit,
         );
-        return StockUnitService.convertToStockUnitData(editedStockUnit);
+        return editedStockUnit;
     }
 
     static async deleteStockUnit(stockUnitId: string): Promise<void> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        await catalogueDbService.deleteStockUnit(stockUnitId);
-    }
-
-    private static convertToStockUnitData(stockUnit: TStockUnitDoc) {
-        if (stockUnit) {
-            const { id, name, unit, isDefault } = stockUnit;
-            const stockData: IStockUnitData = { id, name, unit, isDefault };
-            return stockData;
-        }
-        return null;
+        const { StockUnitDbService } = tenantDbServices.catalogue;
+        await StockUnitDbService.deleteStockUnit(stockUnitId);
     }
 }

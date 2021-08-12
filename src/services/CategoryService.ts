@@ -13,8 +13,8 @@ type ICategoryDoc = tenantDbModels.catalogueModels.ICategoryDoc;
 
 export class CategoryService {
     static async getAllCategory(): Promise<ICategoryData[]> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const allCategory: ICategoryDoc[] = await catalogueDbService.getAllCategory();
+        const { CategoryDbService } = tenantDbServices.catalogue;
+        const allCategory: ICategoryDoc[] = await CategoryDbService.getAllCategory();
         const categoryList: ICategoryData[] = [];
         if (!isEmpty(allCategory)) {
             const categoryIdVsCategory: Record<string, ICategoryDoc> = {};
@@ -42,10 +42,8 @@ export class CategoryService {
     }
 
     static async getCategory(categoryId: string): Promise<ICategoryData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const { id, title, parent, children } = await catalogueDbService.getCategoryById(
-            categoryId,
-        );
+        const { CategoryDbService } = tenantDbServices.catalogue;
+        const { id, title, parent, children } = await CategoryDbService.getCategoryById(categoryId);
         const childrenData = (<ICategoryData[]>children).map((child) => ({
             id: child.id,
             title: child.title,
@@ -61,8 +59,8 @@ export class CategoryService {
     }
 
     static async createCategory(newCategory: ICreateCategoryRequest): Promise<ICategoryData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const category = await catalogueDbService.createCategory(newCategory);
+        const { CategoryDbService } = tenantDbServices.catalogue;
+        const category = await CategoryDbService.createCategory(newCategory);
         const { id, parent, title } = category;
         const parentStr = (<Types.ObjectId>parent)?.toHexString();
         const categoryRes: ICategoryData = {
@@ -77,11 +75,8 @@ export class CategoryService {
         categoryId: string,
         pos: IEditCategoryPositionRequest,
     ): Promise<ICategoryData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const { id, title, parent } = await catalogueDbService.editCategoryPosition(
-            categoryId,
-            pos,
-        );
+        const { CategoryDbService } = tenantDbServices.catalogue;
+        const { id, title, parent } = await CategoryDbService.editCategoryPosition(categoryId, pos);
         const categoryRes: ICategoryData = {
             id,
             title,
@@ -94,8 +89,8 @@ export class CategoryService {
         categoryId: string,
         categoryMeta: IEditCategoryRequest,
     ): Promise<ICategoryData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const { id, title, children } = await catalogueDbService.editCategoryContent(
+        const { CategoryDbService } = tenantDbServices.catalogue;
+        const { id, title, children } = await CategoryDbService.editCategoryContent(
             categoryId,
             categoryMeta,
         );
@@ -109,8 +104,8 @@ export class CategoryService {
         categoryId: string,
         siblingArr: IEditCategoryChildrenOrderRequest,
     ): Promise<ICategoryData> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        const { id, title, children } = await catalogueDbService.editCategoryChildrenOrder(
+        const { CategoryDbService } = tenantDbServices.catalogue;
+        const { id, title, children } = await CategoryDbService.editCategoryChildrenOrder(
             categoryId,
             siblingArr,
         );
@@ -121,8 +116,8 @@ export class CategoryService {
     }
 
     static async deleteCategory(categoryId: string): Promise<void> {
-        const catalogueDbService = tenantDbServices.catalogue;
-        await catalogueDbService.deleteCategory(categoryId);
+        const { CategoryDbService } = tenantDbServices.catalogue;
+        await CategoryDbService.deleteCategory(categoryId);
     }
 
     private static buildCategoryRecursively(

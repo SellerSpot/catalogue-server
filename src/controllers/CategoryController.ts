@@ -37,6 +37,7 @@ export class CategoryController {
 
     static getAllCategories: RequestHandler = async (_, res) => {
         const allCategories: ICategoryData[] = await CategoryService.getAllCategory();
+
         res.status(STATUS_CODE.OK).json(<IGetAllCategoryResponse>{
             status: true,
             data: allCategories,
@@ -58,7 +59,7 @@ export class CategoryController {
         const params = (req.params as unknown) as IEditChildrenOrderPathParam;
         const body: IEditCategoryChildrenOrderRequest = req.body;
         const category: ICategoryData = await CategoryService.editCategoryChildrenOrder(
-            params.parentid,
+            params.parentId,
             body,
         );
         res.status(STATUS_CODE.OK).json(<IEditCategoryChildrenOrderResponse>{
