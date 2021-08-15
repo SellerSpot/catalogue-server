@@ -7,7 +7,7 @@ import {
 
 export class ProductService {
     static async createProduct(newProduct: ICreateProductRequest): Promise<IProductData> {
-        const { ProductDbService } = tenantDbServices.catalogue;
+        const { ProductService: ProductDbService } = tenantDbServices.catalogue;
         const createdProduct: IProductData = await ProductDbService.createProduct(newProduct);
         return createdProduct;
     }
@@ -16,7 +16,7 @@ export class ProductService {
         productId: string,
         editProductProps: IEditProductRequest,
     ): Promise<IProductData> {
-        const { ProductDbService } = tenantDbServices.catalogue;
+        const { ProductService: ProductDbService } = tenantDbServices.catalogue;
         const updatedProduct: IProductData = await ProductDbService.editProduct(
             productId,
             editProductProps,
@@ -25,25 +25,25 @@ export class ProductService {
     }
 
     static async getProduct(productId: string): Promise<IProductData> {
-        const { ProductDbService } = tenantDbServices.catalogue;
+        const { ProductService: ProductDbService } = tenantDbServices.catalogue;
         const product: IProductData = await ProductDbService.getProduct(productId);
         return product;
     }
 
     static async searchProduct(query: string): Promise<IProductData[]> {
-        const { ProductDbService } = tenantDbServices.catalogue;
+        const { ProductService: ProductDbService } = tenantDbServices.catalogue;
         const matchedProducts: IProductData[] = await ProductDbService.searchProduct(query);
         return matchedProducts;
     }
 
     static async getAllProduct(): Promise<IProductData[]> {
-        const { ProductDbService } = tenantDbServices.catalogue;
+        const { ProductService: ProductDbService } = tenantDbServices.catalogue;
         const allProducts: IProductData[] = await ProductDbService.getAllProduct();
         return allProducts;
     }
 
     static async deleteProduct(productId: string): Promise<void> {
-        const { ProductDbService } = tenantDbServices.catalogue;
+        const { ProductService: ProductDbService } = tenantDbServices.catalogue;
         await ProductDbService.deleteProduct(productId);
     }
 }

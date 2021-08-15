@@ -14,7 +14,7 @@ import {
     IEditCategoryRequest,
 } from '@sellerspot/universal-types';
 import { CategoryService } from 'services/services';
-import { IEditChildrenOrderPathParam } from '../../.yalc/@sellerspot/universal-types/dist/catalogue/category/routes';
+import { IEditChildrenOrderPathParam } from '@sellerspot/universal-types';
 
 export class CategoryController {
     static createCategory: RequestHandler = async (req, res) => {
