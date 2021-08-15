@@ -1,14 +1,13 @@
 import Joi from 'joi';
+import { RegexUtil } from '@sellerspot/universal-functions';
 import {
     ICreateTaxBracketRequest,
     ICreateTaxGroupRequest,
     IEditTaxBracketRequest,
     IEditTaxGroupRequest,
-    IEditTaxGroupResponse,
 } from '@sellerspot/universal-types';
-import { RegexUtil } from '@sellerspot/universal-functions';
 
-export class TaxSettingSchema {
+export class TaxBracketSchema {
     // tax bracket
 
     static createTaxBracket = Joi.object<ICreateTaxBracketRequest>({
@@ -24,11 +23,11 @@ export class TaxSettingSchema {
     // tax group
     static createTaxGroup = Joi.object<ICreateTaxGroupRequest>({
         name: Joi.string().max(255).required(),
-        bracket: Joi.array().items(Joi.string().regex(RegexUtil.OBJECT_ID).required()),
+        group: Joi.array().items(Joi.string().regex(RegexUtil.OBJECT_ID).required()),
     });
 
     static editTaxGroup = Joi.object<IEditTaxGroupRequest>({
         name: Joi.string().max(255).required(),
-        bracket: Joi.array().items(Joi.string().regex(RegexUtil.OBJECT_ID).required()),
+        group: Joi.array().items(Joi.string().regex(RegexUtil.OBJECT_ID).required()),
     });
 }

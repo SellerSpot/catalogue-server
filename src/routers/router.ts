@@ -3,7 +3,7 @@ import { IResponse, ROUTES, STATUS_CODE } from '@sellerspot/universal-types';
 import categoryRouter from './category';
 import brandRouter from './brand';
 import productRouter from './product';
-import taxBracketRouter from './taxSetting';
+import taxBracketRouter from './taxBracket';
 import stockUnitRouter from './stockUnit';
 import outletRouter from './outlet';
 
