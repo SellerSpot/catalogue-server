@@ -1,7 +1,6 @@
 import { TaxBracketController } from 'controllers/controllers';
 import { Router } from 'express';
 import { CommonSchema, TaxBracketSchema } from 'schemas/schemas';
-import { TaxBracketService } from 'services/TaxSettingService';
 import { middlewares } from '@sellerspot/universal-functions';
 import { ROUTES } from '@sellerspot/universal-types';
 
