@@ -1,9 +1,9 @@
 import Joi from 'joi';
-import { IProductRequest } from '@sellerspot/universal-types';
 import { RegexUtil } from '@sellerspot/universal-functions';
+import { ICreateProductRequest } from '../../.yalc/@sellerspot/universal-types/dist';
 
 export class ProductSchema {
-    static createProduct = Joi.object<IProductRequest>({
+    static createProduct = Joi.object<ICreateProductRequest>({
         name: Joi.string().max(255).required(),
         description: Joi.string().max(1000),
         barcode: Joi.string(),
